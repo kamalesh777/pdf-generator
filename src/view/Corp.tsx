@@ -6,12 +6,12 @@ const Corp = (): JSX.Element => {
   const [modalState, setModalState] = useState<boolean>(false)
   return (
     <>
-      <h3>
-        Create a new Corp
+      <div className="d-flex justify-content-between align-items-center">
+        <h3>Create a new corp</h3>
         <Button onClick={() => setModalState(true)} type="primary">
           Create
         </Button>
-      </h3>
+      </div>
       <CreateCorp {...{ modalState, setModalState }} />
     </>
   )

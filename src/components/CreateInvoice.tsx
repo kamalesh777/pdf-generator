@@ -7,7 +7,7 @@ interface propTypes {
   setModalState: (params: boolean) => void
 }
 
-const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
+const CreateInvoice = ({ modalState, setModalState }: propTypes): JSX.Element => {
   const [form] = Form.useForm()
   const [loading] = useState<boolean>(false)
 
@@ -85,4 +85,4 @@ const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
   )
 }
 
-export default CreateCorp
+export default CreateInvoice

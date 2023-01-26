@@ -1,14 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
 .sidebar {
-    overflow: 'auto';
-    height: '100vh';
-    position: 'fixed';
+    overflow: auto;
+    height: 100vh;
+    position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
 }
 .header {
-  position: 'sticky';
+  position: sticky;
   top: 0;
   z-index: 1;
-  width: '100%';
+  width: 100%;
+}
+.ant-modal-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    // padding-bottom: 0.5rem !important;
+    // border-bottom: 1px solid #ebebeb;
+}
+.ant-layout-content{
+  margin: 1rem;
+  background-color: #fff;
+}
+.ant-layout .ant-layout-header {
+  background-color: #fff;
+}
+.ant-menu .ant-menu-item {
+  border-radius: 0;
+  margin: 0;
 }
