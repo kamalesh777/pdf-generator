@@ -5,7 +5,9 @@
       "@/components/*": ["src/components/*"],
       "@/layout/*": ["src/layout/*"],
       "@/view/*": ["src/view/*"],
-      "@/styles/*": ["styles/*"]
+      "@/styles/*": ["styles/*"],
+      "@/constant/*": ["src/constant/*"]
+
     },
     "target": "es5",
     "lib": [

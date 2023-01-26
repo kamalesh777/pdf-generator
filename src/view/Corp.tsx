@@ -1,5 +1,6 @@
 import { Button } from 'antd'
 import React, { useState } from 'react'
+import CorpTable from '@/components/CopTable'
 import CreateCorp from '@/components/CreateCorp'
 
 const Corp = (): JSX.Element => {
@@ -13,6 +14,7 @@ const Corp = (): JSX.Element => {
         </Button>
       </div>
       <CreateCorp {...{ modalState, setModalState }} />
+      <CorpTable />
     </>
   )
 }
