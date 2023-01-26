@@ -1,34 +1,50 @@
-import { UploadOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, message, Modal, Row, Upload } from 'antd'
-import React, { useState } from 'react'
+import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import React, { useEffect, useState } from 'react'
 
+const {} = Select
 interface propTypes {
   modalState: boolean
   setModalState: (params: boolean) => void
 }
+interface corpListType {
+  value: string
+  label: string
+}
+
+const corpsss = [
+  {
+    label: 'Auroara llc',
+    value: '2242434rw352',
+  },
+  {
+    label: 'Aritra llc',
+    value: '22424hj3b252',
+  },
+  {
+    label: 'Kamalesh llc',
+    value: '224234bhb252',
+  },
+  {
+    label: 'Auroara llc',
+    value: '2246769hb252',
+  },
+]
 
 const CreateInvoice = ({ modalState, setModalState }: propTypes): JSX.Element => {
   const [form] = Form.useForm()
   const [loading] = useState<boolean>(false)
+  const [corpList, setCorpList] = useState<corpListType[]>([])
 
-  const uploadProps = {
-    beforeUpload: file => {
-      const isPNG = file.type === 'image/png'
-      if (!isPNG) {
-        message.error(`${file.name} is not a png file`)
-      }
-      return isPNG || Upload.LIST_IGNORE
-    },
-    onChange: info => {
-      console.log(info.fileList)
-    },
-  }
+  useEffect(() => {
+    setCorpList(corpsss)
+  }, [])
+
   const destroyModal = (): void => {
     setModalState(false)
   }
   return (
     <Modal
-      title="Create Corp."
+      title="Create Invoice."
       onCancel={destroyModal}
       centered
       width={500}
@@ -45,7 +61,7 @@ const CreateInvoice = ({ modalState, setModalState }: propTypes): JSX.Element =>
       <Form form={form} layout="vertical">
         <Row gutter={12}>
           <Col span={12}>
-            <Form.Item label="Corp Name" name="corp_name">
+            <Form.Item label="User Name" name="user_name">
               <Input />
             </Form.Item>
           </Col>
@@ -54,32 +70,57 @@ const CreateInvoice = ({ modalState, setModalState }: propTypes): JSX.Element =>
               <Input />
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item label="Corp Address" name="corp_address">
+          <Col span={12}>
+            <Form.Item label="Email" name="user_email">
               <Input />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Support Number" name="corp_support">
+            <Form.Item label="Phone" name="user_phone">
               <Input />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Support Email" name="corp_email">
+            <Form.Item label="Order ID" name="order_id">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Tracking ID" name="tracking_id">
               <Input />
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item label="CS Hours" name="cs_hours">
+            <Form.Item label="Address" name="user_address">
               <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Product Price" name="product_price">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Shipping Price" name="shipping_price">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Card Number" name="card_number">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Order Date" name="order_date">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item label="Select Corp" name="corp_id">
+              <Select options={corpList} />
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item label="Brand Logo" valuePropName="fileList">
-          <Upload {...uploadProps} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Upload png only</Button>
-          </Upload>
-        </Form.Item>
       </Form>
     </Modal>
   )
