@@ -1,88 +1,87 @@
-import { Space, Table, Tag } from 'antd'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Table, Tag } from 'antd'
 import React from 'react'
+import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
+import useFetch from '@/hooks/useFetch'
+// eslint-disable-next-line no-duplicate-imports
+import type { MenuProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
+import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface DataType {
   key: string
   name: string
-  age: number
-  address: string
-  tags: string[]
+  ebook: boolean
+  llc: string
+  url: string
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green'
-          if (tag === 'loser') {
-            color = 'volcano'
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          )
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-]
+const CorpTable = (): JSX.Element => {
+  const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-]
+  const actionMenu: MenuProps['items'] = [
+    {
+      label: 'Edit',
+      key: 'edit',
+    },
+    {
+      label: 'Duplicte',
+      key: 'duplicate',
+    },
+    {
+      label: <strong className="text-danger">Delete</strong>,
+      key: 'delete',
+    },
+  ]
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      ellipsis: true,
+      width: '20%',
+      render: text => <a>{text}</a>,
+    },
+    {
+      title: 'LLC',
+      dataIndex: 'llc',
+      key: 'llc',
+      ellipsis: true,
+      width: '20%',
+    },
+    {
+      title: 'Ebook',
+      dataIndex: 'ebook',
+      key: 'ebook',
+      ellipsis: true,
+      width: '15%',
+      render: (_, { ebook }) => <Tag color={ebook ? '#87d068' : 'grey'}>{ebook ? 'TRUE' : 'FALSE'}</Tag>,
+    },
+    {
+      title: 'URL',
+      key: 'url',
+      dataIndex: 'url',
+      ellipsis: true,
+      width: '35%',
+      render: (_, { url }) => <span>{!!url ? url : EMPTY_PLACEHOLDER}</span>,
+    },
+    {
+      title: '',
+      key: 'action',
+      render: () => (
+        <div className="d-flex justify-content-end">
+          <Dropdown menu={{ items: actionMenu }} trigger={['click']}>
+            <Button className="p-0" type="link" onClick={e => e.preventDefault()}>
+              <EllipsisOutlined rotate={90} />
+            </Button>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ]
 
-const CorpTable: React.FC = () => <Table columns={columns} dataSource={data} />
+  const loader = isLoading ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
+  return <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+}
 
 export default CorpTable

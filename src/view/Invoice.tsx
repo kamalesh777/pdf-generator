@@ -6,6 +6,7 @@ import InvoiceTable from '@/components/InvoiceTable'
 
 const Invoice = (): JSX.Element => {
   const [modalState, setModalState] = useState<boolean>(false)
+
   return (
     <Card>
       <Row className="mb-4" gutter={12} justify="space-between">

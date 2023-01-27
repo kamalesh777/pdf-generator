@@ -1,60 +1,24 @@
 import { EllipsisOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Table, Tag } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
+import { Button, Dropdown, Table } from 'antd'
+import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
+import useFetch from '@/hooks/useFetch'
 // eslint-disable-next-line no-duplicate-imports
 import type { MenuProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
+import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface DataType {
   key: string
-  name: string
-  ebook: boolean
-  llc: string
-  url: string
+  order_id: string
+  order_name: string
+  order_email: string
+  corp_name: string
+  order_card: string
 }
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    url: 'http:localhost:3000',
-    llc: 'hello llc',
-    ebook: true,
-  },
-  {
-    key: '2',
-    name: 'John Ccena',
-    url: 'http:localhost:3000',
-    llc: 'hello llc',
-    ebook: true,
-  },
-  {
-    key: '3',
-    name: 'Raul Brown',
-    url: '',
-    llc: 'hello llc',
-    ebook: false,
-  },
-  {
-    key: '4',
-    name: 'John kelly',
-    url: 'http:localhost:3000',
-    llc: 'hello llc',
-    ebook: true,
-  },
-]
 
 const InvoiceTable = (): JSX.Element => {
-  const [contentLoader, setContentLoader] = useState<boolean>(true)
-  const [tableData, setTableData] = useState<DataType[]>([])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setContentLoader(false)
-      // setTableData(data)
-    }, 2200)
-  }, [])
+  const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
 
   const actionMenu: MenuProps['items'] = [
     {
@@ -72,35 +36,41 @@ const InvoiceTable = (): JSX.Element => {
   ]
   const columns: ColumnsType<DataType> = [
     {
+      title: 'Order ID',
+      dataIndex: 'order_id',
+      key: 'order_id',
+      ellipsis: true,
+      width: '10%',
+    },
+    {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'order_name',
+      key: 'order_name',
       ellipsis: true,
-      width: '20%',
-      render: text => <a>{text}</a>,
+      width: '18%',
     },
     {
-      title: 'LLC',
-      dataIndex: 'llc',
-      key: 'llc',
+      title: 'Email',
+      dataIndex: 'order_email',
+      key: 'order_email',
       ellipsis: true,
-      width: '20%',
+      width: '18%',
     },
     {
-      title: 'Ebook',
-      dataIndex: 'ebook',
-      key: 'ebook',
+      title: 'Corp Name',
+      key: 'corp_name',
+      dataIndex: 'corp_name',
       ellipsis: true,
-      width: '15%',
-      render: (_, { ebook }) => <Tag color={ebook ? '#87d068' : 'grey'}>{ebook ? 'TRUE' : 'FALSE'}</Tag>,
+      width: '25%',
+      render: (_, { corp_name }) => <span>{!!corp_name ? corp_name : EMPTY_PLACEHOLDER}</span>,
     },
     {
-      title: 'URL',
-      key: 'url',
-      dataIndex: 'url',
+      title: 'Credit Card',
+      key: 'order_card',
+      dataIndex: 'order_card',
       ellipsis: true,
-      width: '35%',
-      render: (_, { url }) => <span>{!!url ? url : EMPTY_PLACEHOLDER}</span>,
+      width: '10%',
+      render: (_, { order_card }) => <span>{!!order_card ? order_card : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: '',
@@ -116,9 +86,8 @@ const InvoiceTable = (): JSX.Element => {
       ),
     },
   ]
-
-  const loader = contentLoader ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
-  return <Table columns={columns} locale={{ emptyText: loader }} dataSource={tableData} />
+  const loader = !isLoading ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
+  return <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
 }
 
 export default InvoiceTable

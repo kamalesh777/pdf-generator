@@ -6,7 +6,8 @@
       "@/layout/*": ["src/layout/*"],
       "@/view/*": ["src/view/*"],
       "@/styles/*": ["styles/*"],
-      "@/constant/*": ["src/constant/*"]
+      "@/constant/*": ["src/constant/*"],
+      "@/hooks/*": ["src/hooks/*"]
 
     },
     "target": "es5",
@@ -32,7 +33,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/hooks/useFetch.js"  ],
   "exclude": [
     "node_modules"
   ]
