@@ -11,6 +11,7 @@
 .ant-menu .ant-menu-item {
   border-radius: 0;
   margin: 0;
+  width: 100%;
 }
 .ant-modal-body {
     max-height: 410px;
@@ -30,4 +31,7 @@
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 4px;
   }
+}
+.ant-table-wrapper .ant-table-tbody>tr>td {
+  padding: 10px 15px;
 }

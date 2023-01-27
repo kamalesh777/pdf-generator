@@ -51,7 +51,7 @@ const InvoiceTable = (): JSX.Element => {
       title: 'URL',
       key: 'url',
       dataIndex: 'url',
-      render: (_, { url }) => <p>{!!url ? url : EMPTY_PLACEHOLDER}</p>,
+      render: (_, { url }) => <span>{!!url ? url : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: '',
