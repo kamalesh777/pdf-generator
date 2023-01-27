@@ -51,7 +51,7 @@ const InvoiceTable = (): JSX.Element => {
 
   useEffect(() => {
     setTimeout(() => {
-      setContentLoader(true)
+      setContentLoader(false)
       // setTableData(data)
     }, 2200)
   }, [])
