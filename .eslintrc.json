@@ -73,14 +73,14 @@
           "@typescript-eslint/ban-ts-comment": "warn",
           "arrow-body-style": ["error", "as-needed"],
           "react/self-closing-comp": ["error", { "component": true, "html": true }],
-          "autofix/no-unused-vars": [
-              "error",
-              {
-                "argsIgnorePattern": "^_",
-                "ignoreRestSiblings": true,
-                "destructuredArrayIgnorePattern": "^_"
-              }
-             ],
+          // "autofix/no-unused-vars": [
+          //     "error",
+          //     {
+          //       "argsIgnorePattern": "^_",
+          //       "ignoreRestSiblings": true,
+          //       "destructuredArrayIgnorePattern": "^_"
+          //     }
+          //    ],
           "@typescript-eslint/consistent-type-imports": [
               "error",
               {
