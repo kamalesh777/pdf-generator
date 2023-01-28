@@ -1,6 +1,7 @@
 import { Modal, Button } from 'antd'
 import axios from 'axios'
 import React, { useState } from 'react'
+import { mutate } from 'swr'
 
 interface propTypes {
   objId: string
@@ -14,7 +15,8 @@ const DeleteModal = ({ objId, deleteModalState, setDeleteModalState }: propTypes
   const deleteCorpHandler = async (): Promise<void> => {
     setBtnLoading(true)
     try {
-      axios.post(`http://localhost:5000/api/corp-srv/delete-corp/${objId}`)
+      await axios.post(`http://localhost:5000/api/corp-srv/delete-corp/${objId}`)
+      mutate('http://localhost:5000/api/corp-srv/corp-list', null, true)
     } catch (err) {
     } finally {
       setBtnLoading(false)

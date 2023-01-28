@@ -20,16 +20,16 @@ const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Name',
-      dataIndex: 'product_name',
-      key: 'product_name',
+      title: 'Corp Name',
+      dataIndex: 'corp_name',
+      key: 'corp_name',
       ellipsis: true,
       width: '20%',
     },
     {
-      title: 'LLC',
-      dataIndex: 'corp_name',
-      key: 'corp_name',
+      title: 'Product Name',
+      dataIndex: 'product_name',
+      key: 'product_name',
       ellipsis: true,
       width: '20%',
     },

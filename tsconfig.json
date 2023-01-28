@@ -8,8 +8,8 @@
       "@/styles/*": ["styles/*"],
       "@/constant/*": ["src/constant/*"],
       "@/hooks/*": ["src/hooks/*"],
-      "@/common/*": ["src/common/*"]
-
+      "@/common/*": ["src/common/*"],
+      "@/utils/*": ["src/utils/*"]
     },
     "target": "es5",
     "lib": [

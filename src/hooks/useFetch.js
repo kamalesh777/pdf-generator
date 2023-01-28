@@ -11,7 +11,7 @@ function useFetch(apiUrl) {
       return err.message
     }
   }
-  const { data, error, isLoading } = useSWR('/api/data', fetcher, {
+  const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
     revalidateOnFocus: false,
   })
 

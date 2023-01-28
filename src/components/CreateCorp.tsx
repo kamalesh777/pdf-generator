@@ -3,9 +3,10 @@ import { Button, Checkbox, Col, Form, Input, message, Modal, Row, Upload } from 
 import axios from 'axios'
 import { startCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
-import { useSWRConfig } from 'swr'
+import { mutate } from 'swr'
+import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
+import { getBase64, makeRandomCharacter } from '@/utils/commonFunc'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
-import { getBase64 } from 'src/utils'
 
 interface propTypes {
   modalState: boolean
@@ -35,8 +36,6 @@ interface formValueTypes {
 }
 
 const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JSX.Element => {
-  const { mutate } = useSWRConfig()
-
   const [form] = Form.useForm()
   const [loading, setLoading] = useState<boolean>(false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
@@ -48,7 +47,12 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     if (objId && modalState) {
       axios.get(`http://localhost:5000/api/corp-srv/edit-corp/${objId}`).then(res => {
         const { result } = res.data as responseType
-        form.setFieldsValue({ ...result, corp_name: action === 'duplicate' ? `${result.corp_name} - Copy` : result.corp_name })
+        if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+          form.setFieldsValue({
+            ...result,
+            corp_name: action === DUPLICATE_VAR ? `${result.corp_name} - ${makeRandomCharacter(5)}` : result.corp_name,
+          })
+        }
         setLoading(false)
       })
     }
@@ -78,20 +82,24 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     setModalState(false)
     form.resetFields()
   }
+
+  // fetch a fresh request after a new creation or edit
+  const revalidateList = (): Promise<void> => mutate('http://localhost:5000/api/corp-srv/corp-list')
+
   // form submit handler
-  const submitFormHandler = (values: formValueTypes): void => {
+  const submitFormHandler = async (values: formValueTypes): Promise<void> => {
     setBtnLoading(true)
     const payload = {
       ...values,
       product_image: productImage,
     }
     try {
-      if (action === 'edit') {
-        axios.patch(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
-        mutate('http://localhost:5000/api/corp-srv/corp-list', true)
+      if (action === EDIT_VAR) {
+        await axios.patch(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
+        revalidateList()
       } else {
-        axios.post('http://localhost:5000/api/corp-srv/create-corp', payload)
-        mutate('http://localhost:5000/api/corp-srv/corp-list', true)
+        await axios.post('http://localhost:5000/api/corp-srv/create-corp', payload)
+        revalidateList()
       }
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -138,7 +146,20 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
         <Form form={form} layout="vertical" onFinish={submitFormHandler}>
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item label="Corp Name" name="corp_name">
+              <Form.Item
+                label="Corp Name"
+                name="corp_name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Corp name is required',
+                  },
+                  {
+                    whitespace: true,
+                    message: 'Enter a valid name',
+                  },
+                ]}
+              >
                 <Input />
               </Form.Item>
             </Col>
