@@ -3,49 +3,33 @@ import { Button, Dropdown, Table, Tag } from 'antd'
 import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
-// eslint-disable-next-line no-duplicate-imports
-import type { MenuProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface DataType {
+  _id: string
   key: string
-  name: string
+  product_name: string
   ebook: boolean
-  llc: string
-  url: string
+  corp_name: string
+  ebook_url: string
 }
 
-const CorpTable = (): JSX.Element => {
-  const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
+const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
+  const { data, isLoading } = useFetch('http://localhost:5000/api/corp-srv/corp-list')
 
-  const actionMenu: MenuProps['items'] = [
-    {
-      label: 'Edit',
-      key: 'edit',
-    },
-    {
-      label: 'Duplicte',
-      key: 'duplicate',
-    },
-    {
-      label: <strong className="text-danger">Delete</strong>,
-      key: 'delete',
-    },
-  ]
   const columns: ColumnsType<DataType> = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'product_name',
+      key: 'product_name',
       ellipsis: true,
       width: '20%',
-      render: text => <a>{text}</a>,
     },
     {
       title: 'LLC',
-      dataIndex: 'llc',
-      key: 'llc',
+      dataIndex: 'corp_name',
+      key: 'corp_name',
       ellipsis: true,
       width: '20%',
     },
@@ -59,20 +43,20 @@ const CorpTable = (): JSX.Element => {
     },
     {
       title: 'URL',
-      key: 'url',
-      dataIndex: 'url',
+      key: 'ebook_url',
+      dataIndex: 'ebook_url',
       ellipsis: true,
       width: '35%',
-      render: (_, { url }) => <span>{!!url ? url : EMPTY_PLACEHOLDER}</span>,
+      render: (_, { ebook_url }) => <span>{!!ebook_url ? ebook_url : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: '',
       key: 'action',
-      render: () => (
+      render: (_, record) => (
         <div className="d-flex justify-content-end">
           <Dropdown menu={{ items: actionMenu }} trigger={['click']}>
             <Button className="p-0" type="link" onClick={e => e.preventDefault()}>
-              <EllipsisOutlined rotate={90} />
+              <EllipsisOutlined rotate={90} onClick={() => setObjId(record._id)} />
             </Button>
           </Dropdown>
         </div>

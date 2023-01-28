@@ -7,7 +7,8 @@
       "@/view/*": ["src/view/*"],
       "@/styles/*": ["styles/*"],
       "@/constant/*": ["src/constant/*"],
-      "@/hooks/*": ["src/hooks/*"]
+      "@/hooks/*": ["src/hooks/*"],
+      "@/common/*": ["src/common/*"]
 
     },
     "target": "es5",

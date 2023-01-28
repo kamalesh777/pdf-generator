@@ -1,7 +1,6 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 
-const {} = Select
 interface propTypes {
   modalState: boolean
   setModalState: (params: boolean) => void
