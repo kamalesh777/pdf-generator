@@ -1,15 +1,24 @@
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, message, Modal, Row, Upload } from 'antd'
+import axios from 'axios'
 import React, { useState } from 'react'
+import { getBase64 } from 'src/utils'
 
 interface propTypes {
   modalState: boolean
   setModalState: (params: boolean) => void
 }
+interface imageTypes {
+  base64: string
+  name: string
+  fileType: string
+  fileSize: string
+}
 
 const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
   const [form] = Form.useForm()
   const [loading] = useState<boolean>(false)
+  const [productImage, setProductImage] = useState<imageTypes>()
 
   const uploadProps = {
     beforeUpload: file => {
@@ -20,12 +29,28 @@ const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
       return isPNG || Upload.LIST_IGNORE
     },
     onChange: info => {
-      console.log(info.fileList)
+      getBase64(info.file.originFileObj, result =>
+        setProductImage({
+          base64: result,
+          name: info.file.name,
+          fileType: info.file.type,
+          fileSize: info.file.size,
+        }),
+      )
     },
   }
   const destroyModal = (): void => {
     setModalState(false)
   }
+  const submitFormHandler = values => {
+    const payload = {
+      ...values,
+      brand_image: productImage,
+    }
+    axios.post('http://localhost:5000/api/media-srv/upload-image', payload)
+    console.log(payload)
+  }
+
   return (
     <Modal
       title="Create Corp."
@@ -34,7 +59,7 @@ const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
       width={500}
       open={modalState}
       footer={[
-        <Button key="submit" htmlType="submit" type="primary" loading={loading} onClick={destroyModal}>
+        <Button key="submit" htmlType="submit" type="primary" loading={loading} onClick={() => form.submit()}>
           Save
         </Button>,
         <Button key="back" onClick={destroyModal}>
@@ -42,7 +67,7 @@ const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
         </Button>,
       ]}
     >
-      <Form form={form} layout="vertical">
+      <Form form={form} layout="vertical" onFinish={submitFormHandler}>
         <Row gutter={12}>
           <Col span={12}>
             <Form.Item label="Corp Name" name="corp_name">
@@ -75,7 +100,7 @@ const CreateCorp = ({ modalState, setModalState }: propTypes): JSX.Element => {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item label="Brand Logo" valuePropName="fileList">
+        <Form.Item label="Brand Logo" name="brand_image" valuePropName="file">
           <Upload {...uploadProps} maxCount={1}>
             <Button icon={<UploadOutlined />}>Upload png only</Button>
           </Upload>
