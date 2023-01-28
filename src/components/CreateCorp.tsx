@@ -5,7 +5,7 @@ import { startCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { mutate } from 'swr'
 import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
-import { getBase64, makeRandomCharacter } from '@/utils/commonFunc'
+import { getBase64, randomString } from '@/utils/commonFunc'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface propTypes {
@@ -50,7 +50,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
         if (action === DUPLICATE_VAR || action === EDIT_VAR) {
           form.setFieldsValue({
             ...result,
-            corp_name: action === DUPLICATE_VAR ? `${result.corp_name} - ${makeRandomCharacter(5)}` : result.corp_name,
+            corp_name: action === DUPLICATE_VAR ? `${result.corp_name} - ${randomString}` : result.corp_name,
           })
         }
         setLoading(false)
