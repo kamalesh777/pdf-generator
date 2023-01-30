@@ -17,3 +17,15 @@ body {
   z-index: 1;
   width: 100%;
 }
+.action-menu  {
+  visibility: hidden;
+}
+.action-menu span {
+  cursor: pointer;
+}
+.ant-table-cell-row-hover .action-menu  {
+  visibility: visible;
+}
+
+
+

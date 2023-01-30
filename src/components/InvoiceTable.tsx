@@ -1,4 +1,4 @@
-import { EllipsisOutlined } from '@ant-design/icons'
+import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table } from 'antd'
 import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
@@ -69,12 +69,22 @@ const InvoiceTable = (): JSX.Element => {
       key: 'order_card',
       dataIndex: 'order_card',
       ellipsis: true,
-      width: '10%',
+      width: '15%',
       render: (_, { order_card }) => <span>{!!order_card ? order_card : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: '',
       key: 'action',
+      render: () => (
+        <div className="action-menu">
+          <EyeOutlined />
+          <CloudDownloadOutlined className="ms-3" />
+        </div>
+      ),
+    },
+    {
+      title: '',
+      key: 'dot',
       render: () => (
         <div className="d-flex justify-content-end">
           <Dropdown menu={{ items: actionMenu }} trigger={['click']}>

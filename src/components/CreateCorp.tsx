@@ -193,7 +193,15 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
                 <Checkbox onChange={e => setIsEbook(e.target.checked)}>Ebook</Checkbox>
               </Form.Item>
               {isEbook && (
-                <Form.Item name="ebook_url">
+                <Form.Item
+                  name="ebook_url"
+                  rules={[
+                    {
+                      required: isEbook,
+                      message: 'URL is required',
+                    },
+                  ]}
+                >
                   <Input placeholder="Enter ebook URL" />
                 </Form.Item>
               )}

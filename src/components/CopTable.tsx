@@ -65,7 +65,7 @@ const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
   ]
 
   const loader = isLoading ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
-  return <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+  return <Table rowKey="_id" columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
 }
 
 export default CorpTable
