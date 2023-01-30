@@ -1,0 +1,42 @@
+
+$border-color: #a1a1a1 ;
+.line {
+  height: 1px;
+  background: $border-color;
+  margin-top: 30px;
+}
+.line + .line {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.invoice {
+  margin: 50px auto;
+}
+.invoice p {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+footer .line {
+  margin-top: 16px;
+}
+.table-bordered thead td,
+.table-bordered thead th {
+  border-bottom-width: 1px;
+}
+.clientFooter {
+  margin-top: 30px;
+}
+.table {
+  border: 1px solid $border-color;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.table th,
+.table td {
+  border: 1px solid $border-color;
+}
+.table td,
+.table th {
+  padding: 0.5rem;
+}

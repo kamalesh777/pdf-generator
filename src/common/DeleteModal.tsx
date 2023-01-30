@@ -5,19 +5,20 @@ import { mutate } from 'swr'
 import ToastMessage from './ToastMessage'
 
 interface propTypes {
-  objId: string
+  API_URL: string
+  MUTATE_URL: string
   deleteModalState: boolean
   setDeleteModalState: (params: boolean) => void
 }
 
-const DeleteModal = ({ objId, deleteModalState, setDeleteModalState }: propTypes): JSX.Element => {
+const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_URL }: propTypes): JSX.Element => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const deleteCorpHandler = async (): Promise<void> => {
     setBtnLoading(true)
     try {
-      const response = await axios.post(`http://localhost:5000/api/corp-srv/delete-corp/${objId}`)
-      mutate('http://localhost:5000/api/corp-srv/corp-list', null, true)
+      const response = await axios.post(API_URL)
+      mutate(MUTATE_URL, null, true)
       ToastMessage('success', '', response.data.message)
     } catch (err) {
       ToastMessage('error', '', err.message)

@@ -19,10 +19,15 @@ const LayoutWrapper = ({ children }): JSX.Element => {
       <Sider className="sidebar" theme="light">
         <Menu items={menu} />
       </Sider>
-      <Layout>
+      <Layout className="main-layout">
         <Header className="header">Header</Header>
         <Content className="p-4">{children}</Content>
-        <Footer>Footer</Footer>
+        <Footer>
+          Made by{' '}
+          <a target="new" href="kammoskill.autos">
+            Kamalesh Maity
+          </a>
+        </Footer>
       </Layout>
     </Layout>
   )

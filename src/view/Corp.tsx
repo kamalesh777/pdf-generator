@@ -57,7 +57,14 @@ const Corp = (): JSX.Element => {
       </Row>
       <CreateCorp {...{ modalState, setModalState, action, objId }} />
       <CorpTable {...{ actionMenu, setObjId }} />
-      <DeleteModal {...{ deleteModalState, setDeleteModalState, objId }} />
+      <DeleteModal
+        {...{
+          deleteModalState,
+          setDeleteModalState,
+          API_URL: `http://localhost:5000/api/corp-srv/delete-corp/${objId}`,
+          MUTATE_URL: `http://localhost:5000/api/corp-srv/corp-list`,
+        }}
+      />
     </Card>
   )
 }

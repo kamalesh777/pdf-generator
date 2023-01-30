@@ -1,14 +1,14 @@
 import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table } from 'antd'
+import router from 'next/router'
 import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
-// eslint-disable-next-line no-duplicate-imports
-import type { MenuProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface DataType {
+  _id: string
   key: string
   order_id: string
   order_name: string
@@ -17,23 +17,9 @@ interface DataType {
   order_card: string
 }
 
-const InvoiceTable = (): JSX.Element => {
+const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
   const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
 
-  const actionMenu: MenuProps['items'] = [
-    {
-      label: 'Edit',
-      key: 'edit',
-    },
-    {
-      label: 'Duplicte',
-      key: 'duplicate',
-    },
-    {
-      label: <strong className="text-danger">Delete</strong>,
-      key: 'delete',
-    },
-  ]
   const columns: ColumnsType<DataType> = [
     {
       title: 'Order ID',
@@ -77,7 +63,7 @@ const InvoiceTable = (): JSX.Element => {
       key: 'action',
       render: () => (
         <div className="action-menu">
-          <EyeOutlined />
+          <EyeOutlined onClick={() => router.push('/invoice-bill')} />
           <CloudDownloadOutlined className="ms-3" />
         </div>
       ),
@@ -85,11 +71,11 @@ const InvoiceTable = (): JSX.Element => {
     {
       title: '',
       key: 'dot',
-      render: () => (
+      render: (_, record) => (
         <div className="d-flex justify-content-end">
           <Dropdown menu={{ items: actionMenu }} trigger={['click']}>
             <Button className="p-0" type="link" onClick={e => e.preventDefault()}>
-              <EllipsisOutlined rotate={90} />
+              <EllipsisOutlined rotate={90} onClick={() => setObjId(record._id)} />
             </Button>
           </Dropdown>
         </div>
@@ -97,7 +83,11 @@ const InvoiceTable = (): JSX.Element => {
     },
   ]
   const loader = !isLoading ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
-  return <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+  return (
+    <>
+      <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+    </>
+  )
 }
 
 export default InvoiceTable

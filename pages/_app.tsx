@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import '../styles/bootstrap-utility.scss'
 import '../styles/antd-override.scss'
+import '../styles/invoice-bill.scss'
 import '../styles/globals.scss'
 
 import LayoutWrapper from '@/layout/Index'
