@@ -6,7 +6,6 @@ import { mutate } from 'swr'
 import { TableContentLoaderWithProps } from '@/common/SkeletonLoader'
 import ToastMessage from '@/common/ToastMessage'
 import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
-import { randomString } from '@/utils/commonFunc'
 
 interface propTypes {
   modalState: boolean

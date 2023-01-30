@@ -4,10 +4,10 @@ import axios from 'axios'
 import { startCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { mutate } from 'swr'
-import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
-import { getBase64, randomString } from '@/utils/commonFunc'
-import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 import ToastMessage from '@/common/ToastMessage'
+import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
+import { getBase64 } from '@/utils/commonFunc'
+import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface propTypes {
   modalState: boolean
