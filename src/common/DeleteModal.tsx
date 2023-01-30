@@ -2,6 +2,7 @@ import { Modal, Button } from 'antd'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { mutate } from 'swr'
+import ToastMessage from './ToastMessage'
 
 interface propTypes {
   objId: string
@@ -15,9 +16,11 @@ const DeleteModal = ({ objId, deleteModalState, setDeleteModalState }: propTypes
   const deleteCorpHandler = async (): Promise<void> => {
     setBtnLoading(true)
     try {
-      await axios.post(`http://localhost:5000/api/corp-srv/delete-corp/${objId}`)
+      const response = await axios.post(`http://localhost:5000/api/corp-srv/delete-corp/${objId}`)
       mutate('http://localhost:5000/api/corp-srv/corp-list', null, true)
+      ToastMessage('success', '', response.data.message)
     } catch (err) {
+      ToastMessage('error', '', err.message)
     } finally {
       setBtnLoading(false)
       destroyModal()
@@ -31,7 +34,7 @@ const DeleteModal = ({ objId, deleteModalState, setDeleteModalState }: propTypes
       title="Delete"
       onCancel={destroyModal}
       centered
-      width={500}
+      width={350}
       open={deleteModalState}
       footer={[
         <Button danger type="primary" key="button" disabled={btnLoading} loading={btnLoading} onClick={deleteCorpHandler}>
@@ -42,7 +45,7 @@ const DeleteModal = ({ objId, deleteModalState, setDeleteModalState }: propTypes
         </Button>,
       ]}
     >
-      <span>Are you sure you want to delete?</span>
+      <p className="mt-0">Are you sure you want to delete?</p>
     </Modal>
   )
 }
