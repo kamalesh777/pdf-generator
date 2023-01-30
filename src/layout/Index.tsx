@@ -1,4 +1,5 @@
 import { Layout, Menu } from 'antd'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -17,6 +18,14 @@ const LayoutWrapper = ({ children }): JSX.Element => {
   return (
     <Layout>
       <Sider className="sidebar" theme="light">
+        <div className="logo">
+          <Image
+            src="https://ik.imagekit.io/g5zld5ryd/pdf-generator/logo/logo-color.png"
+            alt="pdf-creator"
+            width="150"
+            height="55"
+          />
+        </div>
         <Menu items={menu} />
       </Sider>
       <Layout className="main-layout">
