@@ -27,7 +27,6 @@ interface formValueTypes {
   total_price: string
   order_card: string
   order_date: string
-  corp_id: string
   corp_details: string
 }
 interface responseType {
@@ -56,6 +55,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
   }, [])
 
   useEffect(() => {
+    const randomString = Math.random().toString(36).substring(2, 8)
     setLoading(true)
     if (objId && modalState) {
       axios.get(`http://localhost:5000/api/invoice-srv/edit-invoice/${objId}`).then(res => {
@@ -63,7 +63,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
         if (action === DUPLICATE_VAR || action === EDIT_VAR) {
           form.setFieldsValue({
             ...result,
-            order_name: action === DUPLICATE_VAR ? `${result.order_name} - ${randomString}` : result.order_name,
+            order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
           })
         }
         setLoading(false)
@@ -85,25 +85,25 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     setBtnLoading(true)
     try {
       if (action === EDIT_VAR) {
-        await axios.patch(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, formValues)
+        const res = await axios.patch(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, formValues)
+        ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
-        await axios.post('http://localhost:5000/api/invoice-srv/create-invoice', formValues)
+        const res = await axios.post('http://localhost:5000/api/invoice-srv/create-invoice', formValues)
+        ToastMessage('success', '', res.data.message)
         revalidateList()
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err)
+      ToastMessage('error', '', err.message)
     } finally {
       setBtnLoading(false)
       destroyModal()
     }
   }
 
-  console.log(corpList)
   return (
     <Modal
-      title={`${startCase(action)} Corp.`}
+      title={`${startCase(action)} Invoice.`}
       onCancel={destroyModal}
       centered
       width={500}
@@ -113,7 +113,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
           key="submit"
           htmlType="submit"
           type="primary"
-          disabled={btnLoading}
+          disabled={btnLoading || loading}
           loading={btnLoading}
           onClick={() => form.submit()}
         >
@@ -126,13 +126,13 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     >
       {loading ? (
         <>
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
         </>
       ) : (
         <Form form={form} layout="vertical" onFinish={submitFormHandler}>
@@ -193,7 +193,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="Select Corp" name="corp_id">
+              <Form.Item label="Select Corp" name="corp_details">
                 <Select options={corpList} allowClear />
               </Form.Item>
             </Col>

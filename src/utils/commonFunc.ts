@@ -23,4 +23,4 @@ export const makeRandomCharacter = (length): string => {
 }
 
 // generate random string
-export const randomString = (Math.random() + 1).toString(36).substring(7)
+export const randomString = Math.random().toString(36).substring(2, 8)

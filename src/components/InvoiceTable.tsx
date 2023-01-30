@@ -13,8 +13,12 @@ interface DataType {
   order_id: string
   order_name: string
   order_email: string
-  corp_name: string
-  order_card: string
+  corp_id: string
+  corp_details: {
+    label: string
+    value: string
+  }
+  card_number: string
 }
 
 const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
@@ -44,19 +48,19 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
     },
     {
       title: 'Corp Name',
-      key: 'corp_name',
-      dataIndex: 'corp_name',
+      key: 'corp_details',
+      dataIndex: 'corp_details',
       ellipsis: true,
       width: '25%',
-      render: (_, { corp_name }) => <span>{!!corp_name ? corp_name : EMPTY_PLACEHOLDER}</span>,
+      render: (_, { corp_details }) => <span>{!!corp_details ? corp_details.label : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: 'Credit Card',
-      key: 'order_card',
-      dataIndex: 'order_card',
+      key: 'card_number',
+      dataIndex: 'card_number',
       ellipsis: true,
       width: '15%',
-      render: (_, { order_card }) => <span>{!!order_card ? order_card : EMPTY_PLACEHOLDER}</span>,
+      render: (_, { card_number }) => <span>{!!card_number ? card_number : EMPTY_PLACEHOLDER}</span>,
     },
     {
       title: '',

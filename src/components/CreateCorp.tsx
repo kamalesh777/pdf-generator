@@ -7,6 +7,7 @@ import { mutate } from 'swr'
 import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
 import { getBase64, randomString } from '@/utils/commonFunc'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
+import ToastMessage from '@/common/ToastMessage'
 
 interface propTypes {
   modalState: boolean
@@ -43,14 +44,16 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   const [isEbook, setIsEbook] = useState<boolean>(false)
 
   useEffect(() => {
+    const randomString = Math.random().toString(36).substring(2, 8)
     setLoading(true)
+
     if (objId && modalState) {
       axios.get(`http://localhost:5000/api/corp-srv/edit-corp/${objId}`).then(res => {
         const { result } = res.data as responseType
         if (action === DUPLICATE_VAR || action === EDIT_VAR) {
           form.setFieldsValue({
             ...result,
-            corp_name: action === DUPLICATE_VAR ? `${result.corp_name} - ${randomString}` : result.corp_name,
+            corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
           })
         }
         setLoading(false)
@@ -95,15 +98,16 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
     try {
       if (action === EDIT_VAR) {
-        await axios.patch(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
+        const res = await axios.patch(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
+        ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
-        await axios.post('http://localhost:5000/api/corp-srv/create-corp', payload)
+        const res = await axios.post('http://localhost:5000/api/corp-srv/create-corp', payload)
+        ToastMessage('success', '', res.data.message)
         revalidateList()
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err)
+      ToastMessage('error', '', err.message)
     } finally {
       setBtnLoading(false)
       destroyModal()
@@ -122,7 +126,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
           key="submit"
           htmlType="submit"
           type="primary"
-          disabled={btnLoading}
+          disabled={btnLoading || loading}
           loading={btnLoading}
           onClick={() => form.submit()}
         >
@@ -135,12 +139,12 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     >
       {loading ? (
         <>
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
-          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
+          <TableContentLoaderWithProps rowCounts={1} columnWidth={[100]} rowHeight={140} />
         </>
       ) : (
         <Form form={form} layout="vertical" onFinish={submitFormHandler}>
