@@ -42,7 +42,7 @@ const Invoice = (): JSX.Element => {
     <Card>
       <Row className="mb-4" gutter={12} justify="space-between">
         <Col span={8}>
-          <Input suffix={<SearchOutlined />} allowClear />
+          <Input suffix={<SearchOutlined />} placeholder="Search by user name..." allowClear />
         </Col>
         <Col span={16} className="text-right">
           <Button
