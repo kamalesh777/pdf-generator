@@ -58,6 +58,7 @@ const Corp = (): JSX.Element => {
       <CreateCorp {...{ modalState, setModalState, action, objId }} />
       <CorpTable {...{ actionMenu, setObjId }} />
       <DeleteModal
+        width={400}
         {...{
           deleteModalState,
           setDeleteModalState,

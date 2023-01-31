@@ -45,13 +45,15 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
 
   // fetch all corp list
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/api/corp-srv/corp-list?extended=true')
-      .then(res => {
-        setCorpList(res.data.result.map(obj => ({ label: obj.name, value: obj.id })))
-      })
-      .catch(err => ToastMessage('error', '', err.message))
-  }, [])
+    if (modalState) {
+      axios
+        .get('http://localhost:5000/api/corp-srv/corp-list?extended=true')
+        .then(res => {
+          setCorpList(res.data.result.map(obj => ({ label: obj.name, value: obj.id })))
+        })
+        .catch(err => ToastMessage('error', '', err.message))
+    }
+  }, [modalState])
 
   useEffect(() => {
     const randomString = Math.random().toString(36).substring(2, 8)

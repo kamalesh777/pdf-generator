@@ -51,7 +51,7 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
       key: 'corp_details',
       dataIndex: 'corp_details',
       ellipsis: true,
-      width: '25%',
+      width: '20%',
       render: (_, { corp_details }) => <span>{!!corp_details ? corp_details.label : EMPTY_PLACEHOLDER}</span>,
     },
     {
@@ -65,9 +65,9 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
     {
       title: '',
       key: 'action',
-      render: () => (
+      render: (_, record) => (
         <div className="action-menu">
-          <EyeOutlined onClick={() => router.push('/invoice-bill')} />
+          <EyeOutlined onClick={() => router.push(`/invoice-bill/${record._id}`)} />
           <CloudDownloadOutlined className="ms-3" />
         </div>
       ),

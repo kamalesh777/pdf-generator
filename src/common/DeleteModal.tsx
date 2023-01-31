@@ -9,17 +9,23 @@ interface propTypes {
   MUTATE_URL: string
   deleteModalState: boolean
   setDeleteModalState: (params: boolean) => void
+  children?: React.ReactNode
+  width?: number
 }
 
-const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_URL }: propTypes): JSX.Element => {
+const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_URL, children, width }: propTypes): JSX.Element => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const deleteCorpHandler = async (): Promise<void> => {
     setBtnLoading(true)
     try {
       const response = await axios.post(API_URL)
-      mutate(MUTATE_URL, null, true)
-      ToastMessage('success', '', response.data.message)
+      if (response.data.success) {
+        mutate(MUTATE_URL, null, true)
+        ToastMessage('success', '', response.data.message)
+      } else {
+        ToastMessage('error', '', response.data.message)
+      }
     } catch (err) {
       ToastMessage('error', '', err.message)
     } finally {
@@ -35,7 +41,7 @@ const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_UR
       title="Delete"
       onCancel={destroyModal}
       centered
-      width={350}
+      width={width || 350}
       open={deleteModalState}
       footer={[
         <Button danger type="primary" key="button" disabled={btnLoading} loading={btnLoading} onClick={deleteCorpHandler}>
@@ -46,6 +52,7 @@ const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_UR
         </Button>,
       ]}
     >
+      {children}
       <p className="mt-0">Are you sure you want to delete?</p>
     </Modal>
   )
