@@ -179,7 +179,7 @@ const InvoiceBill = (): JSX.Element => {
                 <Lines linesWidth={[100]} />
               </div>
               {data.ebook && (
-                <div className="text-center">
+                <div className="text-center mt-4">
                   Click here to{' '}
                   <Link href={data.ebook_url}>
                     <Button className="btn-success">Download Ebook</Button>

@@ -50,4 +50,12 @@ body {
 .invoice p > span {
     margin-left: 6px;
 }
-
+.btn-success {
+  background-color: rgb(94, 162, 25);
+  color: rgb(241, 241, 241);
+  border: none;
+}
+.btn-success:hover {
+  background-color: rgb(83, 157, 9);
+  color: rgb(241, 241, 241) !important;
+}
