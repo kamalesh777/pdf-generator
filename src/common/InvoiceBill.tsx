@@ -1,27 +1,31 @@
-import { Card, Col, Row } from 'antd'
+import { Button, Card, Col, Row } from 'antd'
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import Lines from './Lines'
 import ToastMessage from './ToastMessage'
 
 interface dataType {
+  ebook_url: Url
+  ebook: JSX.Element
   card_number: string
   corp_address: string
   corp_email: string
   corp_mobile: string
   corp_name: string
-  cs_hours: string
+  cs_hours?: string
   order_address: string
   order_date: string
   order_email: string
   order_id: string
   order_mobile: string
   order_name: string
-  order_product_name: string
+  order_product_name?: string
   product_name: string
-  product_price: number
-  shipping_price: number
+  product_price?: number
+  shipping_price?: number
+  total_price: number
   tracking_id?: string
   product_image?: {
     url: string
@@ -52,8 +56,6 @@ const InvoiceBill = (): JSX.Element => {
   useEffect(() => {
     router.query.id && fetchPDFData(router.query.id)
   }, [router.query.id])
-
-  console.log(loading, data)
 
   return (
     !loading && (
@@ -137,22 +139,22 @@ const InvoiceBill = (): JSX.Element => {
                       </tr>
                       <tr>
                         <td>
-                          Sales Price: <span>${data.product_price}</span>
+                          Sales Price: <span>${data.product_price.toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Shipping Price: <span>${data.shipping_price}</span>
+                          Shipping Price: <span>${data.shipping_price.toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Total Price: <span>$97.88</span>
+                          Total Price: <span>${data.total_price.toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Credit card Last Four: <span>5756</span>
+                          Credit card Last Four: <span>{data.card_number}</span>
                         </td>
                       </tr>
                     </tbody>
@@ -168,14 +170,22 @@ const InvoiceBill = (): JSX.Element => {
             <div className="row">
               <div className="col-12">
                 <div className="footerContent cmntext">
-                  Thank you for your purchase from <span className="f-LLC">Crazy Legs202 LLC</span> if you have any questions
-                  regarding your order please contact our customer service department directly{' '}
-                  <span className="f-number">8338329195</span>
+                  Thank you for your purchase from <span className="f-LLC">{data.corp_name}</span> if you have any questions
+                  regarding your order please contact our customer service department directly
+                  <span className="f-number">{data.corp_mobile}</span>
                 </div>
               </div>
               <div className="col-12">
                 <Lines linesWidth={[100]} />
               </div>
+              {data.ebook && (
+                <div className="text-center">
+                  Click here to{' '}
+                  <Link href={data.ebook_url}>
+                    <Button className="btn-success">Download Ebook</Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </footer>
         </div>

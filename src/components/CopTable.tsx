@@ -32,6 +32,7 @@ const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
       key: 'product_name',
       ellipsis: true,
       width: '20%',
+      render: (_, record) => (record.product_name ? record.product_name : EMPTY_PLACEHOLDER),
     },
     {
       title: 'Ebook',
