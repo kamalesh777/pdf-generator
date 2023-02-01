@@ -7,8 +7,8 @@ import Lines from './Lines'
 import ToastMessage from './ToastMessage'
 
 interface dataType {
-  ebook_url: Url
-  ebook: JSX.Element
+  ebook_url: string
+  ebook: boolean
   card_number: string
   corp_address: string
   corp_email: string
