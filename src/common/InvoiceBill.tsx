@@ -132,17 +132,17 @@ const InvoiceBill = (): JSX.Element => {
                     <tbody>
                       <tr>
                         <td>
-                          Product Item: <span />
+                          Product Item: <span>{data.order_product_name}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Sales Price: <span>$97.88</span>
+                          Sales Price: <span>${data.product_price}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Shipping Price: <span>$0.00</span>
+                          Shipping Price: <span>${data.shipping_price}</span>
                         </td>
                       </tr>
                       <tr>

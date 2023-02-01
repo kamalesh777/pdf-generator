@@ -1,11 +1,13 @@
-import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
+import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select } from 'antd'
 import axios from 'axios'
+import dayjs from 'dayjs'
 import { startCase } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { mutate } from 'swr'
 import { TableContentLoaderWithProps } from '@/common/SkeletonLoader'
 import ToastMessage from '@/common/ToastMessage'
 import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
+import type { RangePickerProps } from 'antd/es/date-picker'
 
 interface propTypes {
   modalState: boolean
@@ -38,6 +40,10 @@ interface corpListType {
 }
 
 const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes): JSX.Element => {
+  const dateFormat = 'DD/MM/YYYY'
+  // Can not select days today and after today
+  const disabledDate: RangePickerProps['disabledDate'] = current => current && current > dayjs().endOf('day')
+
   const [form] = Form.useForm()
   const [loading, setLoading] = useState<boolean>(false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
@@ -64,6 +70,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
         if (action === DUPLICATE_VAR || action === EDIT_VAR) {
           form.setFieldsValue({
             ...result,
+            order_date: result.order_date ? dayjs(result.order_date as string, dateFormat) : '',
             order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
           })
         }
@@ -84,13 +91,18 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
   // form submit handler
   const submitFormHandler = async (formValues: formValueTypes): Promise<void> => {
     setBtnLoading(true)
+    const payload = {
+      ...formValues,
+      total_price: formValues?.product_price + formValues?.shipping_price,
+      order_date: formValues?.order_date ? dayjs(formValues.order_date).format(dateFormat) : null,
+    }
     try {
       if (action === EDIT_VAR) {
-        const res = await axios.patch(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, formValues)
+        const res = await axios.patch(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
-        const res = await axios.post('http://localhost:5000/api/invoice-srv/create-invoice', formValues)
+        const res = await axios.post('http://localhost:5000/api/invoice-srv/create-invoice', payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       }
@@ -175,12 +187,12 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
             </Col>
             <Col span={12}>
               <Form.Item label="Product Price" name="product_price">
-                <Input />
+                <InputNumber className="w-100" controls={false} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item label="Shipping Price" name="shipping_price">
-                <Input />
+                <InputNumber className="w-100" controls={false} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -190,7 +202,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
             </Col>
             <Col span={12}>
               <Form.Item label="Order Date" name="order_date">
-                <Input />
+                <DatePicker disabledDate={disabledDate} placeholder="" format={dateFormat} className="w-100" />
               </Form.Item>
             </Col>
             <Col span={24}>
