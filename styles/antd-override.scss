@@ -42,11 +42,16 @@
   display: inherit;
 }
 .ant-form-vertical .ant-form-item-label {
-  padding: 0 0 2px;
+  padding: 0 0 6px;
 }
 th.ant-table-cell:before {
   width: 0;
 }
 .ant-dropdown {
     min-width: 120px !important;
+}
+.ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+  position: absolute;
+  right: -12px;
+  top: 1px;
 }

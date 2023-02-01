@@ -42,22 +42,26 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const [productImage, setProductImage] = useState<imageTypes>()
   const [isEbook, setIsEbook] = useState<boolean>(false)
+  const [isBrandName, setIsBrandName] = useState<boolean>(false)
 
+  // fetch single corp details and set data in form
   useEffect(() => {
     const randomString = Math.random().toString(36).substring(2, 8)
-    setLoading(true)
-
-    if (objId && modalState) {
-      axios.get(`http://localhost:5000/api/corp-srv/edit-corp/${objId}`).then(res => {
-        const { result } = res.data as responseType
-        if (action === DUPLICATE_VAR || action === EDIT_VAR) {
-          form.setFieldsValue({
-            ...result,
-            corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
-          })
-        }
-        setLoading(false)
-      })
+    try {
+      setLoading(true)
+      if (objId && modalState) {
+        axios.get(`http://localhost:5000/api/corp-srv/edit-corp/${objId}`).then(res => {
+          const { result } = res.data as responseType
+          if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+            form.setFieldsValue({
+              ...result,
+              corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
+            })
+          }
+        })
+      }
+    } finally {
+      setLoading(false)
     }
   }, [modalState, action, form, objId])
 
@@ -119,7 +123,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
       title={`${startCase(action)} Corp.`}
       onCancel={destroyModal}
       centered
-      width={500}
+      width={480}
       open={modalState}
       footer={[
         <Button
@@ -168,34 +172,75 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Product Name" name="product_name">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Support Number" name="corp_mobile">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Support Email" name="corp_email">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="Corp Address" name="corp_address">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
               <Form.Item label="CS Hours" name="cs_hours">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={24}>
-              <Form.Item className="mb-1" name="ebook" valuePropName="checked">
-                <Checkbox onChange={e => setIsEbook(e.target.checked)}>Ebook</Checkbox>
+            <Col span={12}>
+              <Form.Item
+                label="Support Number"
+                name="corp_mobile"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Support mobile is required',
+                  },
+                  {
+                    whitespace: true,
+                    message: 'Enter a valid number',
+                  },
+                ]}
+              >
+                <Input />
               </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Support Email"
+                name="corp_email"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Support email is required',
+                  },
+                  {
+                    type: 'email',
+                    message: 'Enter a valid email',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label="Corp Address"
+                name="corp_address"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Corp address is required',
+                  },
+                  {
+                    whitespace: true,
+                    message: 'Enter a valid address',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <div className="d-flex">
+                <Form.Item className="mb-2" name="ebook" valuePropName="checked">
+                  <Checkbox onChange={e => setIsEbook(e.target.checked)}>Ebook</Checkbox>
+                </Form.Item>
+                <Form.Item className="mb-2" name="is_brand_name" valuePropName="checked">
+                  <Checkbox onChange={e => setIsBrandName(e.target.checked)}>Brand Name</Checkbox>
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={24}>
               {isEbook && (
                 <Form.Item
                   name="ebook_url"
@@ -211,13 +256,42 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
               )}
             </Col>
             <Col span={24}>
-              <Form.Item label="Brand Logo" name="product_image" valuePropName="file">
-                <Upload {...uploadProps} className="d-block" maxCount={1}>
-                  <Button className="w-100" icon={<UploadOutlined />}>
-                    Upload png only
-                  </Button>
-                </Upload>
-              </Form.Item>
+              {isBrandName ? (
+                <Form.Item
+                  label="Brand Name"
+                  name="product_name"
+                  rules={[
+                    {
+                      required: isBrandName,
+                      message: 'Brand name is required',
+                    },
+                    {
+                      whitespace: true,
+                      message: 'Enter a valid brand name',
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter brand name" />
+                </Form.Item>
+              ) : (
+                <Form.Item
+                  label="Brand Logo"
+                  name="product_image"
+                  valuePropName="file"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Brand logo is required',
+                    },
+                  ]}
+                >
+                  <Upload {...uploadProps} className="d-block" maxCount={1}>
+                    <Button className="w-100" icon={<UploadOutlined />}>
+                      Upload png only
+                    </Button>
+                  </Upload>
+                </Form.Item>
+              )}
             </Col>
           </Row>
         </Form>

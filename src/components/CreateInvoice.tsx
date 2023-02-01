@@ -61,21 +61,25 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     }
   }, [modalState])
 
+  // fetch single invoice details and set data in form
   useEffect(() => {
     const randomString = Math.random().toString(36).substring(2, 8)
     setLoading(true)
-    if (objId && modalState) {
-      axios.get(`http://localhost:5000/api/invoice-srv/edit-invoice/${objId}`).then(res => {
-        const { result } = res.data as responseType
-        if (action === DUPLICATE_VAR || action === EDIT_VAR) {
-          form.setFieldsValue({
-            ...result,
-            order_date: result.order_date ? dayjs(result.order_date as string, dateFormat) : '',
-            order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
-          })
-        }
-        setLoading(false)
-      })
+    try {
+      if (objId && modalState) {
+        axios.get(`http://localhost:5000/api/invoice-srv/edit-invoice/${objId}`).then(res => {
+          const { result } = res.data as responseType
+          if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+            form.setFieldsValue({
+              ...result,
+              order_date: result.order_date ? dayjs(result.order_date as string, dateFormat) : '',
+              order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
+            })
+          }
+        })
+      }
+    } finally {
+      setLoading(false)
     }
   }, [modalState, action, form, objId])
 
