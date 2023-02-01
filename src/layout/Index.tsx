@@ -7,11 +7,11 @@ const { Header, Footer, Sider, Content } = Layout
 const LayoutWrapper = ({ children }): JSX.Element => {
   const menu = [
     {
-      label: <Link href="corp-details">Company Details</Link>,
+      label: <Link href="/corp-details">Company Details</Link>,
       key: 1,
     },
     {
-      label: <Link href="invoice">Invoice Details</Link>,
+      label: <Link href="/invoice">Invoice Details</Link>,
       key: 2,
     },
   ]
