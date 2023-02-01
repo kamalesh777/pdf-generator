@@ -65,7 +65,9 @@ const Corp = (): JSX.Element => {
           API_URL: `http://localhost:5000/api/corp-srv/delete-corp/${objId}`,
           MUTATE_URL: `http://localhost:5000/api/corp-srv/corp-list`,
         }}
-      />
+      >
+        <p className="my-0 text-danger">*All assigned invoices will be delete including this corp.</p>
+      </DeleteModal>
     </Card>
   )
 }
