@@ -37,6 +37,16 @@ body {
   padding: 12px 12px 27px;
   /* border-bottom: 2px solid #f5f5f5; */
 }
-
-
+.logoImage img {
+    max-width: 100%;
+}
+.invoice_title {
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.invoice p > span {
+    margin-left: 6px;
+}
 

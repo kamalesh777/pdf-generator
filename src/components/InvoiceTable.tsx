@@ -1,6 +1,6 @@
 import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table } from 'antd'
-import router from 'next/router'
+import Link from 'next/link'
 import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
@@ -67,7 +67,9 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
       key: 'action',
       render: (_, record) => (
         <div className="action-menu">
-          <EyeOutlined onClick={() => router.push(`/invoice-bill/${record._id}`)} />
+          <Link href={`/invoice-bill/${record._id}`}>
+            <EyeOutlined />
+          </Link>
           <CloudDownloadOutlined className="ms-3" />
         </div>
       ),
