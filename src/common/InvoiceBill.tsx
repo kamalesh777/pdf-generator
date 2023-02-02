@@ -171,13 +171,15 @@ const InvoiceBill = (): JSX.Element => {
               <div className="col-12">
                 <div className="footerContent cmntext">
                   Thank you for your purchase from <span className="f-LLC">{data.corp_name}</span> if you have any questions
-                  regarding your order please contact our customer service department directly
-                  <span className="f-number">{data.corp_mobile}</span>
+                  regarding your order please contact our customer service department directly <span>{data.corp_mobile}</span>
                 </div>
               </div>
-              <div className="col-12">
-                <Lines linesWidth={[100]} />
-              </div>
+              {data.ebook && (
+                <div className="col-12">
+                  <Lines linesWidth={[100, 20]} />
+                </div>
+              )}
+
               {data.ebook && (
                 <div className="text-center mt-4">
                   Click here to{' '}
