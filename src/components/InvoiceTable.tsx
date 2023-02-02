@@ -1,5 +1,6 @@
 import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table } from 'antd'
+import axios from 'axios'
 import Link from 'next/link'
 import React from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
@@ -23,6 +24,8 @@ interface DataType {
 
 const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
   const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
+
+  const createInvoice = (id) => axios.post(`http://localhost:5000/api/invoice-srv/create-invoice/${id}`, {})
 
   const columns: ColumnsType<DataType> = [
     {
@@ -70,7 +73,7 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
           <Link href={`/invoice-bill/${record._id}`}>
             <EyeOutlined />
           </Link>
-          <CloudDownloadOutlined className="ms-3" />
+          <CloudDownloadOutlined onClick={() => createInvoice(record._id)} className="ms-3" />
         </div>
       ),
     },
@@ -88,7 +91,8 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
       ),
     },
   ]
-  const loader = !isLoading ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
+  const loader =
+    !isLoading && !data ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
   return (
     <>
       <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
