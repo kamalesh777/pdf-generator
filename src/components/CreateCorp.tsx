@@ -103,7 +103,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
     try {
       if (action === EDIT_VAR) {
-        const res = await axios.patch(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
+        const res = await axios.put(`http://localhost:5000/api/corp-srv/update-corp/${objId}`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {

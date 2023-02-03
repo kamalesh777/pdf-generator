@@ -97,12 +97,11 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     setBtnLoading(true)
     const payload = {
       ...formValues,
-      total_price: formValues?.product_price + formValues?.shipping_price,
       order_date: formValues?.order_date ? dayjs(formValues.order_date).format(dateFormat) : null,
     }
     try {
       if (action === EDIT_VAR) {
-        const res = await axios.patch(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, payload)
+        const res = await axios.put(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
