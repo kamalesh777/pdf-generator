@@ -25,7 +25,7 @@ interface DataType {
 const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
   const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
 
-  const createInvoice = (id) => axios.post(`http://localhost:5000/api/invoice-srv/create-pdf/${id}`, {})
+  const createInvoice = (id: string): Promise<void> => axios.post(`http://localhost:5000/api/invoice-srv/create-pdf/${id}`, {})
 
   const columns: ColumnsType<DataType> = [
     {
