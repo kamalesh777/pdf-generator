@@ -1,6 +1,6 @@
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table, Tag } from 'antd'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
 import type { ColumnsType } from 'antd/es/table'
@@ -15,8 +15,13 @@ interface DataType {
   ebook_url: string
 }
 
-const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
-  const { data, isLoading } = useFetch('http://localhost:5000/api/corp-srv/corp-list')
+const CorpTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
+  const [listUrl, setListUrl] = useState<string>('http://localhost:5000/api/corp-srv/corp-list')
+  const { data, isLoading } = useFetch(listUrl)
+
+  useEffect(() => {
+    setListUrl(`http://localhost:5000/api/corp-srv/corp-list?search=${searchValue}`)
+  }, [searchValue])
 
   const columns: ColumnsType<DataType> = [
     {
@@ -66,7 +71,9 @@ const CorpTable = ({ actionMenu, setObjId }): JSX.Element => {
   ]
 
   const loader = isLoading ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
-  return <Table rowKey="_id" columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+  return (
+    <Table rowKey="_id" columns={columns} locale={{ emptyText: loader }} className="scroll-table" dataSource={data?.result} />
+  )
 }
 
 export default CorpTable

@@ -1,8 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-body {
+body, html {
   margin: 0;
   font-family: 'Poppins', sans-serif;
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(237, 237, 237);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
 }
+
 .sidebar {
     overflow: auto;
     height: 100vh;
@@ -58,4 +69,24 @@ body {
 .btn-success:hover {
   background-color: rgb(83, 157, 9);
   color: rgb(241, 241, 241) !important;
+}
+.scroll-table .ant-table-header {
+  position: sticky;
+  top: 0;
+}
+.scroll-table .ant-table{
+  min-height: 320px;
+  height: 420px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    // width: 5px;
+    width: 7px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(247, 247, 247);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
 }

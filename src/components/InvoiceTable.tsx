@@ -2,9 +2,11 @@ import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-desig
 import { Button, Dropdown, Table, Tooltip } from 'antd'
 import axios from 'axios'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import ToastMessage from '@/common/ToastMessage'
 import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
+import { byteArrayToPDF } from '@/utils/commonFunc'
 import type { ColumnsType } from 'antd/es/table'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
@@ -22,10 +24,33 @@ interface DataType {
   card_number: string
 }
 
-const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
-  const { data, isLoading } = useFetch('http://localhost:5000/api/invoice-srv/invoice-list')
+const InvoiceTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
+  const [apiUrl, setApiUrl] = useState<string>(`http://localhost:5000/api/invoice-srv/invoice-list`)
+  const { data, isLoading } = useFetch(apiUrl)
 
-  const createInvoice = (id: string): Promise<void> => axios.post(`http://localhost:5000/api/invoice-srv/create-pdf/${id}`, {})
+  useEffect(() => {
+    const fetchSearchData = setTimeout(
+      () => setApiUrl(`http://localhost:5000/api/invoice-srv/invoice-list${searchValue ? `?search=${searchValue}` : ''}`),
+      800,
+    )
+    return () => clearTimeout(fetchSearchData)
+  }, [searchValue])
+
+  const createInvoice = async (id: string): Promise<void> => {
+    setDownloadLoading(true)
+    try {
+      ToastMessage('success', '', 'Download will start shortly')
+      const response = await axios.post(`http://localhost:5000/api/invoice-srv/create-pdf/${id}`, {})
+      const result = await response.data.result
+      byteArrayToPDF(result)
+    } catch (err) {
+      ToastMessage('error', '', err.message)
+    } finally {
+      setDownloadLoading(false)
+    }
+  }
 
   const columns: ColumnsType<DataType> = [
     {
@@ -99,7 +124,7 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
     !isLoading && !data ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
   return (
     <>
-      <Table columns={columns} locale={{ emptyText: loader }} dataSource={data?.result} />
+      <Table columns={columns} locale={{ emptyText: loader }} className="scroll-table" dataSource={data?.result} />
     </>
   )
 }

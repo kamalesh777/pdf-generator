@@ -12,6 +12,7 @@ const Corp = (): JSX.Element => {
   const [deleteModalState, setDeleteModalState] = useState<boolean>(false)
   const [action, setAction] = useState<string>('')
   const [objId, setObjId] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>('')
 
   const actionMenu: MenuProps['items'] = [
     {
@@ -41,7 +42,12 @@ const Corp = (): JSX.Element => {
     <Card>
       <Row className="mb-4" gutter={12} justify="space-between">
         <Col span={8}>
-          <Input suffix={<SearchOutlined />} placeholder="Search by corp name..." allowClear />
+          <Input
+            suffix={<SearchOutlined />}
+            onChange={e => setSearchValue(e.target.value.trim())}
+            placeholder="Search by corp name..."
+            allowClear
+          />
         </Col>
         <Col span={16} className="text-right">
           <Button
@@ -56,7 +62,7 @@ const Corp = (): JSX.Element => {
         </Col>
       </Row>
       <CreateCorp {...{ modalState, setModalState, action, objId }} />
-      <CorpTable {...{ actionMenu, setObjId }} />
+      <CorpTable {...{ actionMenu, setObjId, searchValue }} />
       <DeleteModal
         width={400}
         {...{

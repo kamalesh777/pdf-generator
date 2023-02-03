@@ -13,6 +13,7 @@ const Invoice = (): JSX.Element => {
   const [deleteModalState, setDeleteModalState] = useState<boolean>(false)
   const [action, setAction] = useState<string>('')
   const [objId, setObjId] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>('')
 
   const actionMenu: MenuProps['items'] = [
     {
@@ -42,7 +43,12 @@ const Invoice = (): JSX.Element => {
     <Card>
       <Row className="mb-4" gutter={12} justify="space-between">
         <Col span={8}>
-          <Input suffix={<SearchOutlined />} placeholder="Search by user name..." allowClear />
+          <Input
+            suffix={<SearchOutlined />}
+            onChange={e => setSearchValue(e.target.value)}
+            placeholder="Search by user name..."
+            allowClear
+          />
         </Col>
         <Col span={16} className="text-right">
           <Button
@@ -57,7 +63,7 @@ const Invoice = (): JSX.Element => {
         </Col>
       </Row>
       <CreateInvoice {...{ modalState, setModalState, action, objId }} />
-      <InvoiceTable {...{ actionMenu, setObjId }} />
+      <InvoiceTable {...{ actionMenu, setObjId, searchValue }} />
       <DeleteModal
         {...{
           deleteModalState,
