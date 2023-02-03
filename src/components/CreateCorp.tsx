@@ -57,6 +57,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
               ...result,
               corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
             })
+            setIsBrandName(result.is_brand_name as boolean)
           }
         })
       }

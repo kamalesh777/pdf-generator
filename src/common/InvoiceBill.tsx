@@ -41,7 +41,7 @@ const InvoiceBill = (): JSX.Element => {
 
   const fetchPDFData = async (id): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/invoice-srv/view-invoice?id=${id}`)
+      const response = await axios.get(`http://localhost:5000/api/invoice-srv/view-invoice/${id}`)
       if (response.data.success) {
         setData(response.data.result)
       } else {
@@ -139,17 +139,17 @@ const InvoiceBill = (): JSX.Element => {
                       </tr>
                       <tr>
                         <td>
-                          Sales Price: <span>${data.product_price.toFixed(2)}</span>
+                          Sales Price: <span>${(data.product_price || 0).toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Shipping Price: <span>${data.shipping_price.toFixed(2)}</span>
+                          Shipping Price: <span>${(data.shipping_price || 0).toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          Total Price: <span>${data.total_price.toFixed(2)}</span>
+                          Total Price: <span>${(data.total_price || 0).toFixed(2)}</span>
                         </td>
                       </tr>
                       <tr>
