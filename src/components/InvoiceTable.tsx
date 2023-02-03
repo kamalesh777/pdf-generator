@@ -1,5 +1,5 @@
 import { CloudDownloadOutlined, EllipsisOutlined, EyeOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Table } from 'antd'
+import { Button, Dropdown, Table, Tooltip } from 'antd'
 import axios from 'axios'
 import Link from 'next/link'
 import React from 'react'
@@ -70,10 +70,14 @@ const InvoiceTable = ({ actionMenu, setObjId }): JSX.Element => {
       key: 'action',
       render: (_, record) => (
         <div className="action-menu">
-          <Link href={`/invoice-bill/${record._id}`}>
-            <EyeOutlined />
-          </Link>
-          <CloudDownloadOutlined onClick={() => createInvoice(record._id)} className="ms-3" />
+          <Tooltip title="View">
+            <Link href={`/invoice-bill/${record._id}`}>
+              <EyeOutlined />
+            </Link>
+          </Tooltip>
+          <Tooltip title="Download">
+            <CloudDownloadOutlined onClick={() => createInvoice(record._id)} className="ms-3 text-success" />
+          </Tooltip>
         </div>
       ),
     },
