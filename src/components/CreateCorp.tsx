@@ -58,6 +58,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
               corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
             })
             setIsBrandName(result.is_brand_name as boolean)
+            setIsEbook(result.ebook as boolean)
           }
         })
       }
@@ -89,6 +90,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   const destroyModal = (): void => {
     setModalState(false)
     form.resetFields()
+    setProductImage(null)
   }
 
   // fetch a fresh request after a new creation or edit
