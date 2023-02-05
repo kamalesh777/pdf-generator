@@ -27,16 +27,16 @@ const LayoutWrapper = ({ children }): JSX.Element => {
           />
         </div>
         <Menu items={menu} />
+        <Footer className="fixed-to-bottom">
+          Made by{' '}
+          <a target="new" href="https://www.kammoskill.autos">
+            Kamalesh Maity
+          </a>
+        </Footer>
       </Sider>
       <Layout className="main-layout">
         <Header className="header">Header</Header>
         <Content className="p-4">{children}</Content>
-        <Footer>
-          Made by{' '}
-          <a target="new" href="kammoskill.autos">
-            Kamalesh Maity
-          </a>
-        </Footer>
       </Layout>
     </Layout>
   )
