@@ -21,6 +21,8 @@ body, html {
     left: 0;
     top: 0;
     bottom: 0;
+    box-shadow: 0px 0px 8px #e7e7e7;
+    z-index: 5;
 }
 .main-layout {
   margin-left: 200px;
@@ -90,7 +92,7 @@ body, html {
     border-radius: 4px;
   }
 }
-footer.fixed-to-bottom {
+.fixed-to-bottom {
     position: absolute;
     bottom: 10px;
     left: 0;
@@ -98,4 +100,27 @@ footer.fixed-to-bottom {
     padding: 0.5rem 1rem !important;
     background: transparent !important;
     margin: auto;
+}
+
+.user-icon {
+    border: 2px solid #878787;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    line-height: 29px;
+    margin-right: 4px;
+}
+
+.footer-icon {
+    text-align: center;
+}
+
+.footer-icon a {
+    margin: 0 5px;
+    font-size: 1.3rem;
+    color: #727272;
+}
+
+.footer-icon a:hover {
+    color: #333;
 }
