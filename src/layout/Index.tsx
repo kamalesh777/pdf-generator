@@ -3,7 +3,7 @@ import { Button, Layout, Menu } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { IMAGE_HOST_NAME } from '@/constant/ApiConstant'
+import { GITHUB_PROFILE, IMAGE_HOST_NAME, LINKEDIN_PROFILE } from '@/constant/ApiConstant'
 
 const { Header, Footer, Sider, Content } = Layout
 const LayoutWrapper = ({ children }): JSX.Element => {
@@ -32,10 +32,10 @@ const LayoutWrapper = ({ children }): JSX.Element => {
             </a>
           </p>
           <div className="footer-icon">
-            <Link href="https://www.linkedin.com/in/kamalesh-maity-46679586/">
+            <Link href={LINKEDIN_PROFILE}>
               <LinkedinOutlined />
             </Link>
-            <Link href="https://github.com/kamalesh777">
+            <Link href={GITHUB_PROFILE}>
               <GithubOutlined />
             </Link>
           </div>
