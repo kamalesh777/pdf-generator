@@ -4,7 +4,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import ToastMessage from '@/common/ToastMessage'
-import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
+import { API_URL, EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
 import { byteArrayToPDF } from '@/utils/commonFunc'
 import type { ColumnsType } from 'antd/es/table'
@@ -27,12 +27,12 @@ interface DataType {
 const InvoiceTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
-  const [apiUrl, setApiUrl] = useState<string>(`http://localhost:5000/api/invoice-srv/invoice-list`)
+  const [apiUrl, setApiUrl] = useState<string>(`${API_URL}/api/invoice-srv/invoice-list`)
   const { data, isLoading } = useFetch(apiUrl)
 
   useEffect(() => {
     const fetchSearchData = setTimeout(
-      () => setApiUrl(`http://localhost:5000/api/invoice-srv/invoice-list${searchValue ? `?search=${searchValue}` : ''}`),
+      () => setApiUrl(`${API_URL}/api/invoice-srv/invoice-list${searchValue ? `?search=${searchValue}` : ''}`),
       800,
     )
     return () => clearTimeout(fetchSearchData)
@@ -42,7 +42,7 @@ const InvoiceTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
     setDownloadLoading(true)
     try {
       ToastMessage('success', '', 'Download will start shortly')
-      const response = await axios.post(`http://localhost:5000/api/invoice-srv/create-pdf/${id}`, {})
+      const response = await axios.post(`${API_URL}/api/invoice-srv/create-pdf/${id}`, {})
       const result = await response.data.result
       byteArrayToPDF(result)
     } catch (err) {

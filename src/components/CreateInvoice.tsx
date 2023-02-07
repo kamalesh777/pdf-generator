@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { mutate } from 'swr'
 import { TableContentLoaderWithProps } from '@/common/SkeletonLoader'
 import ToastMessage from '@/common/ToastMessage'
-import { DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
+import { API_URL, DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
 import type { RangePickerProps } from 'antd/es/date-picker'
 
 interface propTypes {
@@ -53,7 +53,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
   useEffect(() => {
     if (modalState) {
       axios
-        .get('http://localhost:5000/api/corp-srv/corp-list?extended=true')
+        .get(`${API_URL}/api/corp-srv/corp-list?extended=true`)
         .then(res => {
           setCorpList(res.data.result.map(obj => ({ label: obj.name, value: obj.id })))
         })
@@ -67,7 +67,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     setLoading(true)
     try {
       if (objId && modalState) {
-        axios.get(`http://localhost:5000/api/invoice-srv/edit-invoice/${objId}`).then(res => {
+        axios.get(`${API_URL}/api/invoice-srv/edit-invoice/${objId}`).then(res => {
           const { result } = res.data as responseType
           if (action === DUPLICATE_VAR || action === EDIT_VAR) {
             form.setFieldsValue({
@@ -90,7 +90,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
   }
 
   // fetch a fresh request after a new creation or edit
-  const revalidateList = (): Promise<void> => mutate('http://localhost:5000/api/invoice-srv/invoice-list')
+  const revalidateList = (): Promise<void> => mutate(`${API_URL}/api/invoice-srv/invoice-list`)
 
   // form submit handler
   const submitFormHandler = async (formValues: formValueTypes): Promise<void> => {
@@ -101,11 +101,11 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     }
     try {
       if (action === EDIT_VAR) {
-        const res = await axios.put(`http://localhost:5000/api/invoice-srv/update-invoice/${objId}`, payload)
+        const res = await axios.put(`${API_URL}/api/invoice-srv/update-invoice/${objId}`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
-        const res = await axios.post('http://localhost:5000/api/invoice-srv/create-invoice', payload)
+        const res = await axios.post(`${API_URL}/api/invoice-srv/create-invoice`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       }

@@ -1,7 +1,7 @@
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Table, Tag } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
+import { API_URL, EMPTY_PLACEHOLDER } from '@/constant/ApiConstant'
 import useFetch from '@/hooks/useFetch'
 import type { ColumnsType } from 'antd/es/table'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
@@ -16,11 +16,11 @@ interface DataType {
 }
 
 const CorpTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
-  const [listUrl, setListUrl] = useState<string>('http://localhost:5000/api/corp-srv/corp-list')
+  const [listUrl, setListUrl] = useState<string>('${API_URL}/api/corp-srv/corp-list')
   const { data, isLoading } = useFetch(listUrl)
 
   useEffect(() => {
-    setListUrl(`http://localhost:5000/api/corp-srv/corp-list?search=${searchValue}`)
+    setListUrl(`${API_URL}/api/corp-srv/corp-list?search=${searchValue}`)
   }, [searchValue])
 
   const columns: ColumnsType<DataType> = [

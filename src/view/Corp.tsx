@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import DeleteModal from '@/common/DeleteModal'
 import CorpTable from '@/components/CopTable'
 import CreateCorp from '@/components/CreateCorp'
+import { API_URL } from '@/constant/ApiConstant'
 // eslint-disable-next-line no-duplicate-imports
 import type { MenuProps } from 'antd'
 
@@ -68,8 +69,8 @@ const Corp = (): JSX.Element => {
         {...{
           deleteModalState,
           setDeleteModalState,
-          API_URL: `http://localhost:5000/api/corp-srv/delete-corp/${objId}`,
-          MUTATE_URL: `http://localhost:5000/api/corp-srv/corp-list`,
+          API_URL: `${API_URL}/api/corp-srv/delete-corp/${objId}`,
+          MUTATE_URL: `${API_URL}/api/corp-srv/corp-list`,
         }}
       >
         <p className="my-0 text-danger">*All assigned invoices will be delete including this corp.</p>
