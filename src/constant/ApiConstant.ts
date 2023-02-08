@@ -1,4 +1,5 @@
-export const API_URL = 'https://pdf-generator-backend.onrender.com'
+// export const API_URL = 'https://pdf-creator.onrender.com'
+export const API_URL = 'https://pdf-invoice.onrender.com'
 // export const API_URL = 'http://localhost:5000'
 export const EMPTY_PLACEHOLDER = '---'
 export const DUPLICATE_VAR = 'duplicate'
