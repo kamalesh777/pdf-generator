@@ -1,5 +1,5 @@
-// export const API_URL = 'https://lazy-worm-umbrella.cyclic.app'
-export const API_URL = 'http://localhost:5000'
+export const API_URL = 'https://pdf-generator-backend.onrender.com'
+// export const API_URL = 'http://localhost:5000'
 export const EMPTY_PLACEHOLDER = '---'
 export const DUPLICATE_VAR = 'duplicate'
 export const EDIT_VAR = 'edit'

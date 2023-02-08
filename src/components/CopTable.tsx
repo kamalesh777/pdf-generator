@@ -16,7 +16,7 @@ interface DataType {
 }
 
 const CorpTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
-  const [listUrl, setListUrl] = useState<string>('${API_URL}/api/corp-srv/corp-list')
+  const [listUrl, setListUrl] = useState<string>(`${API_URL}/api/corp-srv/corp-list`)
   const { data, isLoading } = useFetch(listUrl)
 
   useEffect(() => {
