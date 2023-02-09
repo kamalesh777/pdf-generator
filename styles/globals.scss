@@ -125,3 +125,11 @@ body, html {
 .footer-icon a:hover {
     color: #333;
 }
+.login-bg {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFDEE9;
+    background-image: linear-gradient(0deg, #ffcdde 0%, #B5FFFC 100%);
+}
