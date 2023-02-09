@@ -5,7 +5,9 @@ function useFetch(apiUrl) {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const fetcher = async () => {
     try {
-      const response = await axios.get(apiUrl)
+      const response = await axios.get(apiUrl, {
+        headers: { Authorization: 'Bearer ' + token },
+      })
       return response.data
     } catch (err) {
       return err.message
