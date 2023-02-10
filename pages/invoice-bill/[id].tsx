@@ -1,9 +1,12 @@
 import React from 'react'
 import InvoiceBill from '@/common/InvoiceBill'
+import LayoutWrapper from '@/layout/Index'
 
 const index = (): JSX.Element => (
   <>
-    <InvoiceBill />
+    <LayoutWrapper>
+      <InvoiceBill />
+    </LayoutWrapper>
   </>
 )
 

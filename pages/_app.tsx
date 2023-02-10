@@ -7,15 +7,18 @@ import '../styles/globals.scss'
 import LayoutWrapper from '@/layout/Index'
 import type { AppProps } from 'next/app'
 import SignIn from '@/components/SignIn'
+import { useEffect } from 'react'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function App({ Component, pageProps }: AppProps) {
+  // useEffect(() => {
+  //   if (typeof window !== undefined) {
+
+  //   }
+  // }, [])
   return (
     <>
-      <SignIn />
-      {/* <LayoutWrapper>
-        <Component {...pageProps} />
-      </LayoutWrapper> */}
+      <Component {...pageProps} />
     </>
   )
 }

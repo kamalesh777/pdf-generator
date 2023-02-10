@@ -1,14 +1,13 @@
 import { Button, Card, Form, Input } from 'antd'
+import axios from 'axios'
 import Image from 'next/image'
 import React from 'react'
-import { IMAGE_HOST_NAME } from '@/constant/ApiConstant'
+import { API_URL, IMAGE_HOST_NAME } from '@/constant/ApiConstant'
 
 const onFinish = (values: any) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
+  axios.post(`${API_URL}/api/user-srv/login`, values).then(res => {
+    console.log(res.data)
+  })
 }
 
 const SignIn: React.FC = () => (
@@ -17,7 +16,7 @@ const SignIn: React.FC = () => (
       <div className="my-3">
         <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.png`} alt="pdf-creator" width="150" height="55" />
       </div>
-      <Form name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed} autoComplete="off" layout="vertical">
+      <Form onFinish={onFinish} autoComplete="off" layout="vertical">
         <Form.Item label="Username" name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
           <Input />
         </Form.Item>
