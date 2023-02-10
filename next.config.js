@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ['ik.imagekit.io'],
   },
   env: {
-    API_URL: 'https://lazy-worm-umbrella.cyclic.app',
+    API_BASE_URL: 'https://lazy-worm-umbrella.cyclic.app',
   },
   async redirects() {
     return [

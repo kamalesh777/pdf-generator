@@ -1,11 +1,11 @@
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Col, Form, Input, message, Modal, Row, Upload } from 'antd'
-import axios from 'axios'
 import { startCase } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { mutate } from 'swr'
+import Axios from '@/axios'
 import ToastMessage from '@/common/ToastMessage'
-import { API_URL, DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
+import { API_BASE_URL, DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
 import { getBase64 } from '@/utils/commonFunc'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
@@ -50,7 +50,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     try {
       setLoading(true)
       if (objId && modalState) {
-        axios.get(`${API_URL}/api/corp-srv/edit-corp/${objId}`).then(res => {
+        Axios.get(`${API_BASE_URL}/api/corp-srv/edit-corp/${objId}`).then(res => {
           const { result } = res.data as responseType
           if (action === DUPLICATE_VAR || action === EDIT_VAR) {
             form.setFieldsValue({
@@ -94,7 +94,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   }
 
   // fetch a fresh request after a new creation or edit
-  const revalidateList = (): Promise<void> => mutate(`${API_URL}/api/corp-srv/corp-list`)
+  const revalidateList = (): Promise<void> => mutate(`${API_BASE_URL}/api/corp-srv/corp-list`)
 
   // form submit handler
   const submitFormHandler = async (values: formValueTypes): Promise<void> => {
@@ -105,11 +105,11 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
     try {
       if (action === EDIT_VAR) {
-        const res = await axios.put(`${API_URL}/api/corp-srv/update-corp/${objId}`, payload)
+        const res = await Axios.put(`${API_BASE_URL}/api/corp-srv/update-corp/${objId}`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       } else {
-        const res = await axios.post(`${API_URL}/api/corp-srv/create-corp`, payload)
+        const res = await Axios.post(`${API_BASE_URL}/api/corp-srv/create-corp`, payload)
         ToastMessage('success', '', res.data.message)
         revalidateList()
       }

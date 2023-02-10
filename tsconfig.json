@@ -9,7 +9,8 @@
       "@/constant/*": ["src/constant/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/common/*": ["src/common/*"],
-      "@/utils/*": ["src/utils/*"]
+      "@/utils/*": ["src/utils/*"],
+      "@/axios": ["axios"]
     },
     "target": "es5",
     "lib": [

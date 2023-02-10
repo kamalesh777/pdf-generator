@@ -1,11 +1,11 @@
 import { Modal, Button } from 'antd'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { mutate } from 'swr'
+import Axios from '@/axios'
 import ToastMessage from './ToastMessage'
 
 interface propTypes {
-  API_URL: string
+  API_BASE_URL: string
   MUTATE_URL: string
   deleteModalState: boolean
   setDeleteModalState: (params: boolean) => void
@@ -13,13 +13,20 @@ interface propTypes {
   width?: number
 }
 
-const DeleteModal = ({ API_URL, deleteModalState, setDeleteModalState, MUTATE_URL, children, width }: propTypes): JSX.Element => {
+const DeleteModal = ({
+  API_BASE_URL,
+  deleteModalState,
+  setDeleteModalState,
+  MUTATE_URL,
+  children,
+  width,
+}: propTypes): JSX.Element => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
 
   const deleteCorpHandler = async (): Promise<void> => {
     setBtnLoading(true)
     try {
-      const response = await axios.post(API_URL)
+      const response = await Axios.post(API_BASE_URL)
       if (response.data.success) {
         mutate(MUTATE_URL, null, true)
         ToastMessage('success', '', response.data.message)

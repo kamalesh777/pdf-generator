@@ -1,11 +1,11 @@
 import { Button, Card, Form, Input } from 'antd'
-import axios from 'axios'
 import Image from 'next/image'
 import React from 'react'
-import { API_URL, IMAGE_HOST_NAME } from '@/constant/ApiConstant'
+import Axios from '@/axios'
+import { API_BASE_URL, IMAGE_HOST_NAME } from '@/constant/ApiConstant'
 
 const onFinish = (values: any) => {
-  axios.post(`${API_URL}/api/user-srv/login`, values).then(res => {
+  Axios.post(`${API_BASE_URL}/api/user-srv/login`, values).then(res => {
     console.log(res.data)
   })
 }

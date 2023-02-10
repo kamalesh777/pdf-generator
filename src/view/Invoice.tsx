@@ -5,7 +5,7 @@ import DeleteModal from '@/common/DeleteModal'
 import CreateInvoice from '@/components/CreateInvoice'
 import InvoiceTable from '@/components/InvoiceTable'
 
-import { API_URL } from '@/constant/ApiConstant'
+import { API_BASE_URL } from '@/constant/ApiConstant'
 // eslint-disable-next-line no-duplicate-imports
 import type { MenuProps } from 'antd'
 
@@ -69,8 +69,8 @@ const Invoice = (): JSX.Element => {
         {...{
           deleteModalState,
           setDeleteModalState,
-          API_URL: `${API_URL}/api/invoice-srv/delete-invoice/${objId}`,
-          MUTATE_URL: `${API_URL}/api/invoice-srv/invoice-list`,
+          API_BASE_URL: `${API_BASE_URL}/api/invoice-srv/delete-invoice/${objId}`,
+          MUTATE_URL: `${API_BASE_URL}/api/invoice-srv/invoice-list`,
         }}
       />
     </Card>

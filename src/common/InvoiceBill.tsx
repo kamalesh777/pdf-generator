@@ -1,9 +1,9 @@
 import { Button, Card, Col, Row } from 'antd'
-import axios from 'axios'
+import Axios from '@/axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { API_URL } from '@/constant/ApiConstant'
+import { API_BASE_URL } from '@/constant/ApiConstant'
 import Lines from './Lines'
 import ToastMessage from './ToastMessage'
 
@@ -42,7 +42,7 @@ const InvoiceBill = (): JSX.Element => {
 
   const fetchPDFData = async (id): Promise<void> => {
     try {
-      const response = await axios.get(`${API_URL}/api/invoice-srv/view-invoice/${id}`)
+      const response = await Axios.get(`${API_BASE_URL}/api/invoice-srv/view-invoice/${id}`)
       if (response.data.success) {
         setData(response.data.result)
       } else {
