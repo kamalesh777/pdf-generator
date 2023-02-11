@@ -3,7 +3,11 @@ import { API_BASE_URL } from '@/constant/ApiConstant'
 
 const Axios = axios.create({
   baseURL: API_BASE_URL,
-  // withCredentials: true
+  withCredentials: true,
+  headers: {
+    Cookies: 'name=kamalesh',
+    Authorization: 'Bearer token',
+  },
 })
 
 export default Axios
