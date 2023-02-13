@@ -9,12 +9,11 @@ const Index = (): JSX.Element => {
   const dispatch = useDispatch()
   const authState = useSelector(state => (state as RootState).auth)
   const router = useRouter()
-  const redirect_after_login = (): void => void router.replace('/corp-details')
 
   useEffect(() => {
     dispatch(userLogin(null))
-    authState.isAuth && redirect_after_login()
-  }, [authState.isAuth])
+    authState.isAuth && void router.replace('/corp-details')
+  }, [authState.isAuth]) //eslint-disable-line
   return <SignIn />
 }
 

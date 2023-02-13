@@ -1,19 +1,12 @@
 import { Button, Card, Form, Input } from 'antd'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { IMAGE_HOST_NAME } from '@/constant/ApiConstant'
 import { userLogin } from '@/store/slices/authSlice'
 
 const SignIn: React.FC = () => {
-  const router = useRouter()
   const dispatch = useDispatch()
-  const authState = useSelector(state => (state as RootState).auth)
-
-  const redirect_after_login = (): void => void router.replace('/corp-details')
-
-
 
   const onFinish = async (values: { username: string; password: string }): Promise<void> => {
     dispatch(userLogin(values))
