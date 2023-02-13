@@ -16,7 +16,7 @@ export interface responseTye {
 const initialState = {
   username: '',
   isAuth: '',
-  isLoading: false,
+  isLoading: true,
   message: '',
 }
 
