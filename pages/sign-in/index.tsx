@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,9 +13,11 @@ const Index = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(userLogin(null))
-    authState.isAuth && void router.replace('/corp-details')
+    if (authState.isAuth) {
+      void router.replace('/corp-details')
+    }
   }, [authState.isAuth]) //eslint-disable-line
-  return <SignIn />
+  return authState.isLoading ? <LoadingOutlined /> : <SignIn />
 }
 
 export default Index

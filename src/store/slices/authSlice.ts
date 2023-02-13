@@ -38,7 +38,6 @@ export const userLogin = createAsyncThunk('auth/userLogin', async (formValues?: 
       resolve({
         message: data.message,
         isAuth: data.success,
-        username: 'Kamalesh Maity',
       })
     } catch (err) {
       return err.message
@@ -58,7 +57,7 @@ export const authSlice = createSlice({
     builder.addCase(userLogin.fulfilled, (state, action) => {
       state.message = (action.payload as responseTye).message
       state.isAuth = (action.payload as responseTye).isAuth
-      state.username = (action.payload as responseTye).username
+      state.username = 'Kamalesh Maity'
       state.isLoading = false
     })
     builder.addCase(userLogin.rejected, (state, action) => {
