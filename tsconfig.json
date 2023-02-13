@@ -8,6 +8,7 @@
       "@/styles/*": ["styles/*"],
       "@/constant/*": ["src/constant/*"],
       "@/hooks/*": ["src/hooks/*"],
+      "@/store/*": ["src/store/*"],
       "@/common/*": ["src/common/*"],
       "@/utils/*": ["src/utils/*"],
       "@/axios": ["axios"]
