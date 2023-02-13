@@ -21,27 +21,3 @@ const Index = (): JSX.Element => {
 }
 
 export default Index
-
-// export async function getServerSideProps({ req }): Promise<responseType> {
-//   console.log('decode token============', decodeToken(req.cookies.access_token))
-//   const { username = 'k', password = 'a' } = decodeToken<bodyProps>(req?.cookies?.access_token)
-
-//   const getResponse = await fetch(`${API_BASE_URL}/api/user-srv/login`, {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       username,
-//       password,
-//     }),
-//   })
-//   const response = await getResponse.json()
-//   const data = await response.data
-//   const user = decodeToken(data.result)
-
-//   return {
-//     props: {
-//       loogedIn: data.success,
-//       ...user,
-//       message: data.message,
-//     }, // will be passed to the page component as props
-//   }
-// }
