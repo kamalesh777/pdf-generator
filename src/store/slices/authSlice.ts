@@ -1,10 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import Axios from 'axios'
-import { decodeToken } from 'react-jwt'
-import Cookies from 'universal-cookie'
+import Cookies from 'js-cookie'
 import { API_BASE_URL } from '@/constant/ApiConstant'
-
-const cookies = new Cookies()
 
 export interface responseTye {
   username: string
@@ -23,8 +20,8 @@ const initialState = {
 export const userLogin = createAsyncThunk('auth/userLogin', async (formValues?: { username: string; password: string }) => {
   // eslint-disable-next-line consistent-return
   const payload = await new Promise(async (resolve, reject) => {
-    const token = await cookies.get('access_token')
-    const user = formValues || decodeToken(token)
+    const token = await Cookies.get('access_token')
+    const user = formValues
     try {
       const response = await Axios.post(`${API_BASE_URL}/api/user-srv/login`, user)
       const data = response.data
@@ -33,7 +30,7 @@ export const userLogin = createAsyncThunk('auth/userLogin', async (formValues?: 
         reject(data.message)
       }
 
-      cookies.set('access_token', data.result)
+      Cookies.set('access_token', data.result)
 
       resolve({
         message: data.message,
