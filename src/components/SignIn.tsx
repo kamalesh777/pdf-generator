@@ -1,15 +1,13 @@
 import { Button, Card, Form, Input } from 'antd'
 import Image from 'next/image'
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { IMAGE_HOST_NAME } from '@/constant/ApiConstant'
-import { userLogin } from '@/store/slices/authSlice'
+import useAuth from '@/hooks/useAuth'
 
 const SignIn: React.FC = () => {
-  const dispatch = useDispatch()
-
+  const { login } = useAuth()
   const onFinish = async (values: { username: string; password: string }): Promise<void> => {
-    dispatch(userLogin(values))
+    login(values)
   }
   return (
     <div className="login-bg">
