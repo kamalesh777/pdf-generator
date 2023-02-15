@@ -22,12 +22,11 @@ const useAuth = (): propTypes => {
 
   // eslint-disable-next-line consistent-return
   const login = async (formValues?: { username: string; password: string }): Promise<void> => {
-    const token = Cookies.get('access_token')
+    // const token = Cookies.get('access_token')
     const user = formValues
     try {
       const response = await Axios.post(`${API_BASE_URL}/api/user-srv/login`, user)
       const data = response.data
-      console.log(data)
 
       setToken(data.result)
       Cookies.set('access_token', data.result)

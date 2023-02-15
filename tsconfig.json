@@ -36,7 +36,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/hooks/useFetch.js"  ],
+, "src/hooks/useFetch.js", "middleware.ts"  ],
   "exclude": [
     "node_modules"
   ]

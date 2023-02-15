@@ -6,15 +6,15 @@ const nextConfig = {
   env: {
     API_BASE_URL: 'https://lazy-worm-umbrella.cyclic.app',
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/',
-  //       destination: '/sign-in',
-  //       permanent: true,
-  //     },
-  //   ]
-  // },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/sign-in',
+        permanent: true,
+      },
+    ]
+  },
   reactStrictMode: true,
   swcMinify: true,
 }
