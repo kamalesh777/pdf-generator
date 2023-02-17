@@ -10,8 +10,6 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const origin = request.nextUrl.origin
 
-
-  console.log('IS-AUTH =====', pathname)
   // if user loggedin then user will stay on same page
   if (isAuth) {
     if (pathname === '/' || pathname === '/sign-in') {
@@ -20,9 +18,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
   // redirect to login page if user is not logged in
-  if (!isAuth) {
-    return NextResponse.redirect(`${origin}/sign-in`)
-  }
+  return NextResponse.redirect(`${origin}/sign-in`)
 }
 
 const validateAuth = async (token: string): Promise<boolean> => {
@@ -40,5 +36,5 @@ const validateAuth = async (token: string): Promise<boolean> => {
 }
 
 export const config = {
-  matcher: ['/corp-details', '/invoice', '/'],
+  matcher: ['/', '/corp-details', '/invoice', '/invoice-bill/:path*'],
 }
