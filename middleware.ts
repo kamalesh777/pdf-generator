@@ -5,14 +5,16 @@ import type { NextRequest } from 'next/server'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, consistent-return
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth_token')?.value as string
+  const token = request.cookies.get('auth_token')?.value
+  const isAuth = !!token ? await validateAuth(token) : false
   const pathname = request.nextUrl.pathname
   const origin = request.nextUrl.origin
 
-  const isAuth = !!token ? await validateAuth(token) : false
+
+  console.log('IS-AUTH =====', pathname)
   // if user loggedin then user will stay on same page
   if (isAuth) {
-    if (pathname === '/') {
+    if (pathname === '/' || pathname === '/sign-in') {
       return NextResponse.redirect(`${origin}/corp-details`)
     }
     return NextResponse.next()
@@ -38,5 +40,5 @@ const validateAuth = async (token: string): Promise<boolean> => {
 }
 
 export const config = {
-  matcher: ['/corp-details', '/invoice', '/', '/invoice-bill/:path*'],
+  matcher: ['/corp-details', '/invoice', '/'],
 }

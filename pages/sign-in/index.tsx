@@ -10,26 +10,28 @@ const SignIn: React.FC = () => {
   const [accessToken] = useState(Cookie.get('auth_token'))
   const router = useRouter()
 
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     loginHandler(`${API_BASE_URL}/api/user-srv/sign-in`)
-  //   }
-  // }, [])
+  //   useEffect(() => {
+  //     if (accessToken) {
+  //       loginHandler(`${API_BASE_URL}/api/user-srv/sign-in`)
+  //     }
+  //   }, [])
 
   const loginHandler = async (API_URL: string, formValues?: { username: string; password: string }): Promise<void> => {
     // const token = Cookies.get('auth_token')
     const user = formValues
     try {
       const response = await Axios.post(API_URL, user)
-      router.replace('/')
       const data = response.data
-      Cookie.set('auth_token', data.result)
+      if (data.success) {
+        Cookie.set('auth_token', data.result)
+        router.replace('/corp-details')
+      }
       //   Cookies.set('auth_token', data.result, { expires: 7, secure: true, sameSite: 'strict' })
     } catch (err) {
       router.replace('/sign-in')
     }
   }
-  const onFinish = async (values: { username: string; password: string }): Promise<void> => {
+  const onFinish = (values: { username: string; password: string }): void => {
     loginHandler(`${API_BASE_URL}/api/user-srv/login`, values)
   }
   return (
@@ -46,11 +48,6 @@ const SignIn: React.FC = () => {
           <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
             <Input.Password />
           </Form.Item>
-
-          {/* <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-      <Checkbox>Remember this device for 30 days</Checkbox>
-    </Form.Item> */}
-
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit
