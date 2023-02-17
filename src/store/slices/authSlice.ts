@@ -20,7 +20,7 @@ const initialState = {
 export const userLogin = createAsyncThunk('auth/userLogin', async (formValues?: { username: string; password: string }) => {
   // eslint-disable-next-line consistent-return
   const payload = await new Promise(async (resolve, reject) => {
-    // const token = await Cookies.get('access_token')
+    // const token = await Cookies.get('auth_token')
     const user = formValues
     try {
       const response = await Axios.post(`${API_BASE_URL}/api/user-srv/login`, user)
@@ -30,7 +30,7 @@ export const userLogin = createAsyncThunk('auth/userLogin', async (formValues?: 
         reject(data.message)
       }
 
-      Cookies.set('access_token', data.result)
+      Cookies.set('auth_token', data.result)
 
       resolve({
         message: data.message,
