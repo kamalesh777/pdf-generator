@@ -2,15 +2,17 @@ import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Axios from '@/axios'
-import { API_BASE_URL } from '@/constant/ApiConstant'
+import ToastMessage from '@/common/ToastMessage'
 
 interface propTypes {
   token: string
-  login: () => Promise<void>
+  login: (api, formvalue) => Promise<void>
   logout: () => void
+  loading: boolean
 }
 const useAuth = (): propTypes => {
   const router = useRouter()
+  const [loading, setLoading] = useState<boolean>(false)
   const [token, setToken] = useState(null)
 
   useEffect(() => {
@@ -20,31 +22,32 @@ const useAuth = (): propTypes => {
     }
   }, [])
 
-  // eslint-disable-next-line consistent-return
-  const login = async (formValues?: { username: string; password: string }): Promise<void> => {
-    // const token = Cookies.get('auth_token')
-    const user = formValues
+  const login = async (apiURL: string, formValues: { username: string; password: string }): Promise<void> => {
     try {
-      const response = await Axios.post(`${API_BASE_URL}/api/user-srv/login`, user)
-      const data = response.data
+      setLoading(true)
+      const response = await Axios.post(apiURL, formValues)
+      const data = await response.data
 
-      setToken(data.result)
-      Cookies.set('auth_token', data.result)
-      router.replace('/corp-details')
-      //   Cookies.set('auth_token', data.result, { expires: 7, secure: true, sameSite: 'strict' })
+      if (data.success) {
+        setToken(data.result)
+        Cookies.set('auth_token', data.result)
+        router.replace('/corp-details')
+      }
     } catch (err) {
-      router.replace('/sign-in')
-      return err.message
+      router.replace('/')
+      ToastMessage('error', '', err.message)
+    } finally {
+      setTimeout(() => setLoading(false), 1000)
     }
   }
 
   const logout = (): void => {
     setToken(null)
     Cookies.remove('auth_token')
-    router.replace('/sign-in')
+    router.replace('/')
   }
 
-  return { token, login, logout }
+  return { token, login, logout, loading }
 }
 
 export default useAuth

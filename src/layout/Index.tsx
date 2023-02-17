@@ -4,9 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { GITHUB_PROFILE, IMAGE_HOST_NAME, LINKEDIN_PROFILE } from '@/constant/ApiConstant'
+import useAuth from '@/hooks/useAuth'
 
 const { Header, Footer, Sider, Content } = Layout
 const LayoutWrapper = ({ children }): JSX.Element => {
+  const { logout } = useAuth()
   const menu = [
     {
       label: <Link href="/corp-details">Company Details</Link>,
@@ -47,7 +49,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
             <UserOutlined className="user-icon" />
             Kamalesh Maity
           </p>
-          <Button type="primary" icon={<PoweroffOutlined />} className="ms-2" danger>
+          <Button type="primary" icon={<PoweroffOutlined />} onClick={logout} className="ms-2" danger>
             Logout
           </Button>
         </Header>

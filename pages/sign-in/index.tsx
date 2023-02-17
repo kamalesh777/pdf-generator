@@ -1,39 +1,16 @@
 import { Button, Card, Form, Input } from 'antd'
-import Cookie from 'js-cookie'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import Axios from '@/axios'
+import React from 'react'
 import { API_BASE_URL, IMAGE_HOST_NAME } from '@/constant/ApiConstant'
+import useAuth from '@/hooks/useAuth'
 
 const SignIn: React.FC = () => {
-  const [accessToken] = useState(Cookie.get('auth_token'))
-  const router = useRouter()
+  const { login, loading } = useAuth()
 
-  //   useEffect(() => {
-  //     if (accessToken) {
-  //       loginHandler(`${API_BASE_URL}/api/user-srv/sign-in`)
-  //     }
-  //   }, [])
-
-  const loginHandler = async (API_URL: string, formValues?: { username: string; password: string }): Promise<void> => {
-    // const token = Cookies.get('auth_token')
-    const user = formValues
-    try {
-      const response = await Axios.post(API_URL, user)
-      const data = response.data
-      if (data.success) {
-        Cookie.set('auth_token', data.result)
-        router.replace('/corp-details')
-      }
-      //   Cookies.set('auth_token', data.result, { expires: 7, secure: true, sameSite: 'strict' })
-    } catch (err) {
-      router.replace('/sign-in')
-    }
-  }
   const onFinish = (values: { username: string; password: string }): void => {
-    loginHandler(`${API_BASE_URL}/api/user-srv/login`, values)
+    login(`${API_BASE_URL}/api/user-srv/login`, values)
   }
+
   return (
     <div className="login-bg">
       <Card style={{ width: 400 }}>
@@ -49,8 +26,8 @@ const SignIn: React.FC = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
+            <Button loading={loading} type="primary" htmlType="submit">
+              Login
             </Button>
           </Form.Item>
         </Form>
