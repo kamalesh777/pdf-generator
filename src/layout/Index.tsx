@@ -1,5 +1,5 @@
-import { GithubOutlined, LinkedinOutlined, PoweroffOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Layout, Menu } from 'antd'
+import { GithubOutlined, LinkedinOutlined, PoweroffOutlined } from '@ant-design/icons'
+import { Avatar, Button, Layout, Menu } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -20,6 +20,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
       key: 2,
     },
   ]
+  console.log(profile)
   return (
     <Layout>
       <Sider className="sidebar" theme="light">
@@ -29,7 +30,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
         <Menu items={menu} />
         <Footer className="fixed-to-bottom">
           <p>
-            Made by{' '}
+            Connect me through
             <a target="new" href="https://www.kammoskill.autos">
               {profile?.name}
             </a>
@@ -46,10 +47,10 @@ const LayoutWrapper = ({ children }): JSX.Element => {
       </Sider>
       <Layout className="main-layout">
         <Header className="header d-flex align-items-center justify-content-between">
-          <p>
-            <UserOutlined className="user-icon" />
-            Kamalesh Maity
-          </p>
+          <div>
+            <Avatar src={profile?.image} className="user-icon" />
+            {profile?.name}
+          </div>
           <Button type="primary" icon={<PoweroffOutlined />} onClick={logout} className="ms-2" danger>
             Logout
           </Button>

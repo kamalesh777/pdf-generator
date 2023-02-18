@@ -36,6 +36,7 @@ const useAuth = (): propTypes => {
 
       if (data.success) {
         setToken(data.result.token)
+        console.log(data)
         setProfile(data.result.profile)
         Cookies.set('auth_token', data.result.token)
         router.replace(AFTER_SIGN_IN_URL)
