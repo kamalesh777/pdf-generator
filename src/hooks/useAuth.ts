@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Axios from '@/axios'
 import ToastMessage from '@/common/ToastMessage'
+import { AFTER_SIGN_IN_URL, SIGN_IN_URL } from '@/constant/ApiConstant'
 
 interface propTypes {
   token: string
@@ -31,10 +32,10 @@ const useAuth = (): propTypes => {
       if (data.success) {
         setToken(data.result)
         Cookies.set('auth_token', data.result)
-        router.replace('/corp-details')
+        router.replace(AFTER_SIGN_IN_URL)
       }
     } catch (err) {
-      router.replace('/')
+      router.replace(SIGN_IN_URL)
       ToastMessage('error', '', err.message)
     } finally {
       setTimeout(() => setLoading(false), 1000)
@@ -44,7 +45,7 @@ const useAuth = (): propTypes => {
   const logout = (): void => {
     setToken(null)
     Cookies.remove('auth_token')
-    router.replace('/')
+    router.replace(SIGN_IN_URL)
   }
 
   return { token, login, logout, loading }

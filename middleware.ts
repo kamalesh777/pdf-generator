@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { API_BASE_URL } from '@/constant/ApiConstant'
+import { API_BASE_URL, SIGN_IN_URL } from '@/constant/ApiConstant'
 // eslint-disable-next-line no-duplicate-imports
 import type { NextRequest } from 'next/server'
 
@@ -15,16 +15,16 @@ export async function middleware(request: NextRequest) {
     if (isAuth) {
       return NextResponse.redirect(`${origin}/corp-details`)
     }
-    return NextResponse.redirect(`${origin}/sign-in`)
+    return NextResponse.redirect(`${origin}${SIGN_IN_URL}`)
   }
-  if (pathname === '/sign-in') {
+  if (pathname === SIGN_IN_URL) {
     if (isAuth) {
       return NextResponse.redirect(`${origin}/corp-details`)
     }
-    return NextResponse.rewrite(`${origin}/sign-in`)
+    return NextResponse.rewrite(`${origin}${SIGN_IN_URL}`)
   }
   if (!isAuth) {
-    return NextResponse.redirect(`${origin}/sign-in`)
+    return NextResponse.redirect(`${origin}${SIGN_IN_URL}`)
   }
 
   return NextResponse.next()
