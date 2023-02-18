@@ -16,11 +16,15 @@ interface DataType {
 }
 
 const CorpTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
-  const [listUrl, setListUrl] = useState<string>(`${API_BASE_URL}/api/corp-srv/corp-list`)
-  const { data, isLoading } = useFetch(listUrl)
+  const [apiUrl, setApiUrl] = useState<string>(`${API_BASE_URL}/api/corp-srv/corp-list`)
+  const { data, isLoading } = useFetch(apiUrl)
 
   useEffect(() => {
-    setListUrl(`${API_BASE_URL}/api/corp-srv/corp-list?search=${searchValue}`)
+    const fetchSearchData = setTimeout(
+      () => setApiUrl(`${API_BASE_URL}/api/corp-srv/corp-list${searchValue ? `?search=${searchValue}` : ''}`),
+      800,
+    )
+    return () => clearTimeout(fetchSearchData)
   }, [searchValue])
 
   const columns: ColumnsType<DataType> = [

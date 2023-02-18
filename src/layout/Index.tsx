@@ -8,7 +8,7 @@ import useAuth from '@/hooks/useAuth'
 
 const { Header, Footer, Sider, Content } = Layout
 const LayoutWrapper = ({ children }): JSX.Element => {
-  const { logout } = useAuth()
+  const { logout, profile } = useAuth()
 
   const menu = [
     {
@@ -31,7 +31,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
           <p>
             Made by{' '}
             <a target="new" href="https://www.kammoskill.autos">
-              Kamalesh Maity
+              {profile?.name}
             </a>
           </p>
           <div className="footer-icon">
