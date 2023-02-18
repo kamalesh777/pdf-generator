@@ -10,11 +10,16 @@ interface propTypes {
   login: (api, formvalue) => Promise<void>
   logout: () => void
   loading: boolean
+  profile: {
+    name: string
+    image?: string
+  }
 }
 const useAuth = (): propTypes => {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
   const [token, setToken] = useState(null)
+  const [profile, setProfile] = useState<{ name: string; image: string }>()
 
   useEffect(() => {
     const authToken = Cookies.get('auth_token')
@@ -30,8 +35,9 @@ const useAuth = (): propTypes => {
       const data = await response.data
 
       if (data.success) {
-        setToken(data.result)
-        Cookies.set('auth_token', data.result)
+        setToken(data.result.token)
+        setProfile(data.result.profile)
+        Cookies.set('auth_token', data.result.token)
         router.replace(AFTER_SIGN_IN_URL)
       }
     } catch (err) {
@@ -48,7 +54,7 @@ const useAuth = (): propTypes => {
     Cookies.remove('auth_token')
   }
 
-  return { token, login, logout, loading }
+  return { token, login, logout, loading, profile }
 }
 
 export default useAuth
