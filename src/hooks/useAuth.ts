@@ -23,8 +23,10 @@ const useAuth = (): propTypes => {
 
   useEffect(() => {
     const authToken = Cookies.get('auth_token')
+    const profile_info = Cookies.get('profile')
     if (authToken) {
       setToken(authToken)
+      setProfile(JSON.parse(profile_info))
     }
   }, [])
 
@@ -36,9 +38,11 @@ const useAuth = (): propTypes => {
 
       if (data.success) {
         setToken(data.result.token)
-        console.log(data)
         setProfile(data.result.profile)
         Cookies.set('auth_token', data.result.token)
+        Cookies.set('profile', JSON.stringify(data.result.profile))
+        // Cookies.set('profile_name', data.result.profile.name)
+        // Cookies.set('profile_image', data.result.profile.image)
         router.replace(AFTER_SIGN_IN_URL)
       }
     } catch (err) {
@@ -53,6 +57,9 @@ const useAuth = (): propTypes => {
     setToken(null)
     router.replace(SIGN_IN_URL)
     Cookies.remove('auth_token')
+    Cookies.remove('profile')
+    // Cookies.remove('profile_name')
+    // Cookies.remove('profile_image')
   }
 
   return { token, login, logout, loading, profile }

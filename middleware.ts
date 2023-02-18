@@ -27,6 +27,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`${origin}${SIGN_IN_URL}`)
   }
 
+  // const response = NextResponse.next()
   return NextResponse.next()
 }
 

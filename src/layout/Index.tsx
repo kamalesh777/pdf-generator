@@ -20,7 +20,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
       key: 2,
     },
   ]
-  console.log(profile)
+
   return (
     <Layout>
       <Sider className="sidebar" theme="light">
@@ -30,7 +30,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
         <Menu items={menu} />
         <Footer className="fixed-to-bottom">
           <p>
-            Connect me through
+            Profile:{'  '}
             <a target="new" href="https://www.kammoskill.autos">
               {profile?.name}
             </a>
