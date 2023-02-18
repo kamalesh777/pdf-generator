@@ -36,7 +36,7 @@ const useAuth = (): propTypes => {
       }
     } catch (err) {
       router.replace(SIGN_IN_URL)
-      ToastMessage('error', '', err.message)
+      ToastMessage('error', '', err.response.data.message)
     } finally {
       setTimeout(() => setLoading(false), 1000)
     }
@@ -44,8 +44,8 @@ const useAuth = (): propTypes => {
 
   const logout = (): void => {
     setToken(null)
-    Cookies.remove('auth_token')
     router.replace(SIGN_IN_URL)
+    Cookies.remove('auth_token')
   }
 
   return { token, login, logout, loading }

@@ -1,14 +1,22 @@
 import { GithubOutlined, LinkedinOutlined, PoweroffOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Layout, Menu } from 'antd'
+import Cookie from 'js-cookie'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import Axios from '@/axios'
 import { GITHUB_PROFILE, IMAGE_HOST_NAME, LINKEDIN_PROFILE } from '@/constant/ApiConstant'
 import useAuth from '@/hooks/useAuth'
 
 const { Header, Footer, Sider, Content } = Layout
 const LayoutWrapper = ({ children }): JSX.Element => {
   const { logout } = useAuth()
+  // set authorization on every request headers for axios
+  useEffect(() => {
+    Axios.defaults.headers = {
+      Authorization: `Bearer ${Cookie.get('auth_token')}`,
+    }
+  }, [])
   const menu = [
     {
       label: <Link href="/corp-details">Company Details</Link>,

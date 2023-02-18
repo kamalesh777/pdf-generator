@@ -26,7 +26,6 @@ export async function middleware(request: NextRequest) {
   if (!isAuth) {
     return NextResponse.redirect(`${origin}${SIGN_IN_URL}`)
   }
-
   return NextResponse.next()
 }
 
