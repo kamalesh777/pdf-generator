@@ -58,3 +58,10 @@ th.ant-table-cell:before {
 .ant-layout .ant-layout-header {
   padding-inline: 30px;
 }
+.ant-upload-wrapper .ant-btn {
+  height: 60px;
+}
+.ant-upload-wrapper .ant-upload-list.ant-upload-list-picture .ant-upload-list-item {
+  border-radius: 5px;
+  height: 40px;
+}

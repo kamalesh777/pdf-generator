@@ -57,15 +57,26 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
           if (action === DUPLICATE_VAR || action === EDIT_VAR) {
             setIsBrandName(result.is_brand_name as boolean)
             setIsEbook(result.ebook as boolean)
-
-            if (!!result?.product_image) {
-              const { name, fileId, url } = (await result?.product_image) as { name: string; fileId: string; url: string }
-              setFileList([{ name, fileId, url }])
+            const { name, fileId, url, thumbnailUrl } = result?.product_image as {
+              name: string
+              fileId: string
+              url: string
+              thumbnailUrl: string
             }
+
+            setFileList(() => [{ name, fileId, url, thumbUrl: thumbnailUrl }])
+            // if (!!result?.product_image) {
+            //   const { name, fileId, url } = (await result?.product_image) as { name: string; fileId: string; url: string }
+            //   setFileList([{ name, fileId, url }])
+            //   form.setFieldsValue({
+            //     product_image: { name, fileId, url },
+            //   })
+            // }
 
             form.setFieldsValue({
               ...result,
               corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
+              product_image: [result.product_image].flat(),
             })
 
             // console.log(result)
@@ -77,6 +88,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
   }, [modalState, action, form, objId])
 
+console.log(fileList)
   const uploadProps = {
     beforeUpload: file => {
       const isPNG = file.type === 'image/png'
@@ -85,22 +97,37 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
       }
       return isPNG || Upload.LIST_IGNORE
     },
-    onChange: info => {
-      getBase64(info.file.originFileObj, result =>
-        setProductImage({
-          base64: result,
-          name: info.file.name,
-          fileType: info.file.type,
-          fileSize: info.file.size,
-        }),
-      )
+    onRemove: (file) => {
+      const index = fileList.indexOf(file)
+      const newFileList = fileList.slice()
+      newFileList.splice(index, 1)
+      console.log("NEWFILE", newFileList)
+      setFileList(newFileList)
     },
+    onChange({ file, fileList }) {
+      
+      if (file.status !== 'uploading') {
+        setFileList([...fileList, file])
+      }
+    },
+    // defaultFileList: fileList,
+    // onChange: info => {
+    //   getBase64(info.file.originFileObj, result =>
+    //     setProductImage({
+    //       base64: result,
+    //       name: info.file.name,
+    //       fileType: info.file.type,
+    //       fileSize: info.file.size,
+    //     }),
+    //   )
+    // },
   }
   // hide modal
   const destroyModal = (): void => {
     setModalState(false)
     form.resetFields()
     setProductImage(null)
+    setFileList([])
   }
 
   // fetch a fresh request after a new creation or edit
@@ -115,9 +142,10 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
     try {
       if (action === EDIT_VAR) {
-        const res = await Axios.put(`${API_BASE_URL}/api/corp-srv/update-corp/${objId}`, payload)
-        ToastMessage('success', '', res.data.message)
-        revalidateList()
+        console.log(values)
+        // const res = await Axios.put(`${API_BASE_URL}/api/corp-srv/update-corp/${objId}`, payload)
+        // ToastMessage('success', '', res.data.message)
+        // revalidateList()
       } else {
         const res = await Axios.post(`${API_BASE_URL}/api/corp-srv/create-corp`, payload)
         ToastMessage('success', '', res.data.message)
@@ -290,7 +318,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
                 <Form.Item
                   label="Brand Logo"
                   name="product_image"
-                  valuePropName="file"
+                  valuePropName="fileList"
                   rules={[
                     {
                       required: true,
@@ -298,7 +326,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
                     },
                   ]}
                 >
-                  <Upload {...uploadProps} className="d-block" maxCount={1} defaultFileList={fileList}>
+                  <Upload {...uploadProps} defaultFileList={fileList} className="d-block" maxCount={2} listType="picture">
                     <Button className="w-100" icon={<UploadOutlined />}>
                       Browse or Drag
                       <small className="text-danger"> Only PNG Supported </small>
