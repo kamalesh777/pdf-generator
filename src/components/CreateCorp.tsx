@@ -43,6 +43,8 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   const [productImage, setProductImage] = useState<imageTypes>()
   const [isEbook, setIsEbook] = useState<boolean>(false)
   const [isBrandName, setIsBrandName] = useState<boolean>(false)
+  const [fileList, setFileList] = useState([])
+  // const [removedMediaId, setMediaRemovedId] = useState([])
 
   // fetch single corp details and set data in form
   useEffect(() => {
@@ -50,15 +52,23 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     try {
       setLoading(true)
       if (objId && modalState) {
-        Axios.get(`${API_BASE_URL}/api/corp-srv/edit-corp/${objId}`).then(res => {
+        Axios.get(`${API_BASE_URL}/api/corp-srv/edit-corp/${objId}`).then(async res => {
           const { result } = res.data as responseType
           if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+            setIsBrandName(result.is_brand_name as boolean)
+            setIsEbook(result.ebook as boolean)
+
+            if (!!result?.product_image) {
+              const { name, fileId, url } = (await result?.product_image) as { name: string; fileId: string; url: string }
+              setFileList([{ name, fileId, url }])
+            }
+
             form.setFieldsValue({
               ...result,
               corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
             })
-            setIsBrandName(result.is_brand_name as boolean)
-            setIsEbook(result.ebook as boolean)
+
+            // console.log(result)
           }
         })
       }
@@ -288,9 +298,10 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
                     },
                   ]}
                 >
-                  <Upload {...uploadProps} className="d-block" maxCount={1}>
+                  <Upload {...uploadProps} className="d-block" maxCount={1} defaultFileList={fileList}>
                     <Button className="w-100" icon={<UploadOutlined />}>
-                      Upload png only
+                      Browse or Drag
+                      <small className="text-danger"> Only PNG Supported </small>
                     </Button>
                   </Upload>
                 </Form.Item>
