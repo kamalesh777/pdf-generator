@@ -1,12 +1,12 @@
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Checkbox, Col, Form, Input, message, Modal, Row, Upload } from 'antd'
 import { startCase } from 'lodash'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { mutate } from 'swr'
 import Axios from '@/axios'
 import ToastMessage from '@/common/ToastMessage'
 import { API_BASE_URL, DUPLICATE_VAR, EDIT_VAR } from '@/constant/ApiConstant'
-import { getBase64 } from '@/utils/commonFunc'
+// import { getBase64 } from '@/utils/commonFunc'
 import { TableContentLoaderWithProps } from 'src/common/SkeletonLoader'
 
 interface propTypes {
@@ -21,6 +21,13 @@ interface imageTypes {
   fileType: string
   fileSize: string
 }
+interface productImageTypes {
+  fileId: string
+  name: string
+  url: string
+  thumbUrl: string
+}
+
 interface responseType {
   result: Record<string, unknown>
   message: string
@@ -40,7 +47,6 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   const [form] = Form.useForm()
   const [loading, setLoading] = useState<boolean>(false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
-  const [productImage, setProductImage] = useState<imageTypes>()
   const [isEbook, setIsEbook] = useState<boolean>(false)
   const [isBrandName, setIsBrandName] = useState<boolean>(false)
   const [fileList, setFileList] = useState([])
@@ -57,26 +63,20 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
           if (action === DUPLICATE_VAR || action === EDIT_VAR) {
             setIsBrandName(result.is_brand_name as boolean)
             setIsEbook(result.ebook as boolean)
-            const { name, fileId, url, thumbnailUrl } = result?.product_image as {
-              name: string
-              fileId: string
-              url: string
-              thumbnailUrl: string
-            }
 
-            setFileList(() => [{ name, fileId, url, thumbUrl: thumbnailUrl }])
-            // if (!!result?.product_image) {
-            //   const { name, fileId, url } = (await result?.product_image) as { name: string; fileId: string; url: string }
-            //   setFileList([{ name, fileId, url }])
-            //   form.setFieldsValue({
-            //     product_image: { name, fileId, url },
-            //   })
-            // }
+            if (!!result?.product_image) {
+              const mapImage = (result?.product_image as productImageTypes[])?.map(item => ({
+                name: item.name,
+                fileId: item.fileId,
+                url: item.url,
+                thumbUrl: item.thumbUrl,
+              }))
+              setFileList(mapImage)
+            }
 
             form.setFieldsValue({
               ...result,
               corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
-              product_image: [result.product_image].flat(),
             })
 
             // console.log(result)
@@ -88,46 +88,33 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     }
   }, [modalState, action, form, objId])
 
-console.log(fileList)
-  const uploadProps = {
-    beforeUpload: file => {
-      const isPNG = file.type === 'image/png'
-      if (!isPNG) {
-        message.error(`${file.name} is not a png file`)
-      }
-      return isPNG || Upload.LIST_IGNORE
-    },
-    onRemove: (file) => {
-      const index = fileList.indexOf(file)
-      const newFileList = fileList.slice()
-      newFileList.splice(index, 1)
-      console.log("NEWFILE", newFileList)
-      setFileList(newFileList)
-    },
-    onChange({ file, fileList }) {
-      
-      if (file.status !== 'uploading') {
-        setFileList([...fileList, file])
-      }
-    },
-    // defaultFileList: fileList,
-    // onChange: info => {
-    //   getBase64(info.file.originFileObj, result =>
-    //     setProductImage({
-    //       base64: result,
-    //       name: info.file.name,
-    //       fileType: info.file.type,
-    //       fileSize: info.file.size,
-    //     }),
-    //   )
-    // },
-  }
+  // upload props for upload component
+  const uploadProps = useMemo(
+    () => ({
+      beforeUpload: file => {
+        const isPNG = file.type === 'image/png'
+        if (!isPNG) {
+          message.error(`${file.name} is not a png file`)
+        }
+        return isPNG || Upload.LIST_IGNORE
+      },
+      onRemove: file => {
+        const index = fileList.indexOf(file)
+        const newFileList = fileList.slice()
+        newFileList.splice(index, 1)
+        setFileList(newFileList)
+      },
+      onChange: ({ fileList }) => {
+        setFileList(fileList)
+      },
+    }),
+    [fileList],
+  )
   // hide modal
   const destroyModal = (): void => {
     setModalState(false)
-    form.resetFields()
-    setProductImage(null)
     setFileList([])
+    form.resetFields()
   }
 
   // fetch a fresh request after a new creation or edit
@@ -138,14 +125,13 @@ console.log(fileList)
     setBtnLoading(true)
     const payload = {
       ...values,
-      product_image: productImage,
+      product_image: fileList,
     }
     try {
       if (action === EDIT_VAR) {
-        console.log(values)
-        // const res = await Axios.put(`${API_BASE_URL}/api/corp-srv/update-corp/${objId}`, payload)
-        // ToastMessage('success', '', res.data.message)
-        // revalidateList()
+        const res = await Axios.put(`${API_BASE_URL}/api/corp-srv/update-corp/${objId}`, payload)
+        ToastMessage('success', '', res.data.message)
+        revalidateList()
       } else {
         const res = await Axios.post(`${API_BASE_URL}/api/corp-srv/create-corp`, payload)
         ToastMessage('success', '', res.data.message)
@@ -317,16 +303,15 @@ console.log(fileList)
               ) : (
                 <Form.Item
                   label="Brand Logo"
-                  name="product_image"
                   valuePropName="fileList"
                   rules={[
                     {
-                      required: true,
+                      required: !!fileList ? false : true,
                       message: 'Brand logo is required',
                     },
                   ]}
                 >
-                  <Upload {...uploadProps} defaultFileList={fileList} className="d-block" maxCount={2} listType="picture">
+                  <Upload {...uploadProps} className="d-block" maxCount={1} listType="picture" fileList={[...fileList]}>
                     <Button className="w-100" icon={<UploadOutlined />}>
                       Browse or Drag
                       <small className="text-danger"> Only PNG Supported </small>
