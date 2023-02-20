@@ -40,7 +40,7 @@ const useAuth = (): propTypes => {
         setToken(data.result.token)
         setProfile(data.result.profile)
         Cookies.set('auth_token', data.result.token)
-        Cookies.set('profile', JSON.stringify(data.result.profile))
+        // Cookies.set('profile', JSON.stringify(data.result.profile))
         // Cookies.set('profile_name', data.result.profile.name)
         // Cookies.set('profile_image', data.result.profile.image)
         router.replace(AFTER_SIGN_IN_URL)

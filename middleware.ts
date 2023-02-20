@@ -3,10 +3,22 @@ import { API_BASE_URL, SIGN_IN_URL } from '@/constant/ApiConstant'
 // eslint-disable-next-line no-duplicate-imports
 import type { NextRequest } from 'next/server'
 
+interface responseType {
+  result: {
+    token: string
+    profile: {
+      name: string
+      image: string
+    }
+  }
+  success: boolean
+  message: string
+}
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value
-  const isAuth = !!token ? await validateAuth(token) : false
+  const data = !!token && (await validateAuth(token))
+  const isAuth = !!token ? (data as responseType).success : false
   const pathname = request.nextUrl.pathname
   const origin = request.nextUrl.origin
 
@@ -27,8 +39,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`${origin}${SIGN_IN_URL}`)
   }
 
-  // const response = NextResponse.next()
-  return NextResponse.next()
+  const response = NextResponse.next()
+  response.cookies.set('profile', JSON.stringify(data.result.profile))
+
+  return response
 }
 
 // middleware will run only for these match file
@@ -37,7 +51,7 @@ export const config = {
 }
 
 // fetch sign-in and used the token to check valid auth or not
-const validateAuth = async (token: string): Promise<boolean> => {
+const validateAuth = async (token: string): Promise<responseType> => {
   const API_ENDPOINT = `${API_BASE_URL}/api/user-srv/sign-in`
   const response = await fetch(`${API_ENDPOINT}`, {
     method: 'POST',
@@ -46,7 +60,7 @@ const validateAuth = async (token: string): Promise<boolean> => {
     },
   })
     .then(res => res.json())
-    .then(data => data.success)
+    .then(data => data)
     .catch(() => false)
   return response
 }
