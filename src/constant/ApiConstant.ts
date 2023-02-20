@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://pdf-generator-hs62.onrender.com'
+export const API_BASE_URL = 'https://pdf-creeator.onrender.com'
 // export const API_BASE_URL = 'http://localhost:5000'
 export const EMPTY_PLACEHOLDER = '---'
 export const DUPLICATE_VAR = 'duplicate'
