@@ -26,6 +26,8 @@ const useAuth = (): propTypes => {
     const profile_info = Cookies.get('profile')
     if (authToken) {
       setToken(authToken)
+    }
+    if (profile_info) {
       setProfile(JSON.parse(profile_info))
     }
   }, [])

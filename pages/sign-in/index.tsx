@@ -1,6 +1,7 @@
 import { Button, Card, Form, Input } from 'antd'
 import Image from 'next/image'
 import React from 'react'
+import MetaComponent from '@/common/MetaComponent'
 import { API_BASE_URL, IMAGE_HOST_NAME } from '@/constant/ApiConstant'
 import useAuth from '@/hooks/useAuth'
 
@@ -13,6 +14,7 @@ const SignIn: React.FC = () => {
 
   return (
     <div className="login-bg">
+      <MetaComponent title="Sign In" />
       <Card style={{ width: 400 }}>
         <div className="my-3">
           <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.webp`} alt="pdf-creator" width="150" height="55" />

@@ -89,7 +89,7 @@ const InvoiceBill = (): JSX.Element => {
               <Col span={4} className="text-right">
                 {!!data.product_image && (
                   <div className="logoImage">
-                    <img src={data.product_image.url} alt={data.product_image.name} /> {/*eslint-disable-line*/}
+                    <img src={data.product_image[0].url} alt={data.product_image.name} /> {/*eslint-disable-line*/}
                   </div>
                 )}
                 {!!data.product_name && <h1 className="logoText">{data.product_name}</h1>}

@@ -5,6 +5,7 @@ const nextConfig = {
   },
   env: {
     API_BASE_URL: 'https://lazy-worm-umbrella.cyclic.app',
+    BRAND_NAME: 'Pdf Creator',
   },
   // async redirects() {
   //   return [
