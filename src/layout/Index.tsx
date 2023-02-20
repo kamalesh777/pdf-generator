@@ -25,7 +25,7 @@ const LayoutWrapper = ({ children }): JSX.Element => {
     <Layout>
       <Sider className="sidebar" theme="light">
         <div className="logo">
-          <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.png`} alt="pdf-creator" width="150" height="55" />
+          <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.webp`} alt="pdf-creator" width="150" height="55" />
         </div>
         <Menu items={menu} />
         <Footer className="fixed-to-bottom">

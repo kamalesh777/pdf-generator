@@ -16,16 +16,17 @@ interface propTypes {
   objId: string
 }
 interface imageTypes {
-  base64: string
+  thumbUrl: string
   name: string
-  fileType: string
-  fileSize: string
+  type: string
+  size: string
 }
 interface productImageTypes {
   fileId: string
-  name: string
+  name?: string
+  original_name?: string
   url: string
-  thumbUrl: string
+  thumbnailUrl: string
 }
 
 interface responseType {
@@ -64,12 +65,13 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
             setIsBrandName(result.is_brand_name as boolean)
             setIsEbook(result.ebook as boolean)
 
+            // if product image length true then modify the data
             if (!!result?.product_image) {
               const mapImage = (result?.product_image as productImageTypes[])?.map(item => ({
-                name: item.name,
+                name: item.original_name,
                 fileId: item.fileId,
                 url: item.url,
-                thumbUrl: item.thumbUrl,
+                thumbUrl: item.thumbnailUrl,
               }))
               setFileList(mapImage)
             }

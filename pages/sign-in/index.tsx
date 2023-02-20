@@ -15,7 +15,7 @@ const SignIn: React.FC = () => {
     <div className="login-bg">
       <Card style={{ width: 400 }}>
         <div className="my-3">
-          <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.png`} alt="pdf-creator" width="150" height="55" />
+          <Image src={`${IMAGE_HOST_NAME}/pdf-generator/logo/logo-color.webp`} alt="pdf-creator" width="150" height="55" />
         </div>
         <Form onFinish={onFinish} autoComplete="off" layout="vertical">
           <Form.Item label="Username" name="username" rules={[{ required: true, message: 'Please input your username!' }]}>
