@@ -45,7 +45,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
   const disabledDate: RangePickerProps['disabledDate'] = current => current && current > dayjs().endOf('day')
 
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(Boolean(objId) || false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const [corpList, setCorpList] = useState<corpListType[]>([])
 
@@ -75,10 +75,13 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
               order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
             })
           }
+          setLoading(false)
         })
       }
+    } catch (err) {
+      ToastMessage('error', '', (err as Error).message)
     } finally {
-      setLoading(false)
+      setLoading(true)
     }
   }, [modalState, action, form, objId])
 

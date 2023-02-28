@@ -120,11 +120,10 @@ const InvoiceTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
       ),
     },
   ]
-  const loader =
-    !isLoading && !data ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
+  const loader = isLoading && !data ? <TableContentLoaderWithProps columnWidth={[9, 17, 17, 25, 20, 10]} /> : <p>Empty content</p>
   return (
     <>
-      <Table columns={columns} locale={{ emptyText: loader }} className="scroll-table" dataSource={data?.result} />
+      <Table columns={columns} rowKey="_id" locale={{ emptyText: loader }} className="scroll-table" dataSource={data?.result} />
     </>
   )
 }

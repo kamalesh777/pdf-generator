@@ -46,7 +46,7 @@ interface formValueTypes {
 
 const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JSX.Element => {
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(Boolean(objId) || false)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const [isEbook, setIsEbook] = useState<boolean>(false)
   const [isBrandName, setIsBrandName] = useState<boolean>(false)
@@ -56,8 +56,8 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
   // fetch single corp details and set data in form
   useEffect(() => {
     const randomString = Math.random().toString(36).substring(2, 8)
+    setLoading(true)
     try {
-      setLoading(true)
       if (objId && modalState) {
         Axios.get(`${API_BASE_URL}/api/corp-srv/edit-corp/${objId}`).then(async res => {
           const { result } = res.data as responseType
@@ -83,10 +83,13 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
 
             // console.log(result)
           }
+          setLoading(false)
         })
       }
+    } catch (err) {
+      ToastMessage('error', '', (err as Error).message)
     } finally {
-      setLoading(false)
+      setLoading(true)
     }
   }, [modalState, action, form, objId])
 

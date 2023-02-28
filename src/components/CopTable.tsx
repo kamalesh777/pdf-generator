@@ -74,7 +74,7 @@ const CorpTable = ({ actionMenu, setObjId, searchValue }): JSX.Element => {
     },
   ]
 
-  const loader = isLoading ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
+  const loader = isLoading && !data ? <TableContentLoaderWithProps columnWidth={[18, 20, 15, 40, 8]} /> : <p>Empty content</p>
   return (
     <Table rowKey="_id" columns={columns} locale={{ emptyText: loader }} className="scroll-table" dataSource={data?.result} />
   )
