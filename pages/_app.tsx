@@ -1,4 +1,6 @@
 /* eslint-disable no-restricted-imports */
+
+import '../styles/antd.min.css'
 import '../styles/bootstrap-utility.scss'
 import '../styles/antd-override.scss'
 import '../styles/invoice-bill.scss'
