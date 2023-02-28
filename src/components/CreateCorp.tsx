@@ -130,7 +130,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     setBtnLoading(true)
     const payload = {
       ...values,
-      product_image: fileList,
+      product_image: isBrandName ? null : fileList,
     }
     try {
       if (action === EDIT_VAR) {
