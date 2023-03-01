@@ -40,7 +40,7 @@ interface corpListType {
 }
 
 const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes): JSX.Element => {
-  const dateFormat = 'DD/MM/YYYY'
+  const dateFormat = 'MM/DD/YYYY'
   // Can not select days today and after today
   const disabledDate: RangePickerProps['disabledDate'] = current => current && current > dayjs().endOf('day')
 
