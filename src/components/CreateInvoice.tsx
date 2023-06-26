@@ -142,7 +142,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
         </Button>,
       ]}
     >
-      {loading ? (
+      {!loading ? (
         <>
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />

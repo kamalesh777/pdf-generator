@@ -173,7 +173,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
         </Button>,
       ]}
     >
-      {loading ? (
+      {!loading ? (
         <>
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
