@@ -131,8 +131,8 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
           key="submit"
           htmlType="submit"
           type="primary"
-          disabled={btnLoading || loading}
-          loading={btnLoading}
+          // disabled={btnLoading || loading}
+          // loading={btnLoading}
           onClick={() => form.submit()}
         >
           Save

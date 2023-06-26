@@ -162,8 +162,8 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
           key="submit"
           htmlType="submit"
           type="primary"
-          disabled={btnLoading || loading}
-          loading={btnLoading}
+          // disabled={btnLoading || loading}
+          // loading={btnLoading}
           onClick={() => form.submit()}
         >
           Save
