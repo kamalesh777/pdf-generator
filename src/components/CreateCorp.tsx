@@ -32,6 +32,7 @@ interface productImageTypes {
 interface responseType {
   result: Record<string, unknown>
   message: string
+  success: boolean
 }
 interface formValueTypes {
   corp_name: string
@@ -60,36 +61,39 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
     try {
       if (objId && modalState) {
         Axios.get(`${API_BASE_URL}/api/corp-srv/edit-corp/${objId}`).then(async res => {
-          const { result } = res.data as responseType
-          if (action === DUPLICATE_VAR || action === EDIT_VAR) {
-            setIsBrandName(result.is_brand_name as boolean)
-            setIsEbook(result.ebook as boolean)
+          const { result, success } = res.data as responseType
+          if (success) {
+            if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+              setIsBrandName(result.is_brand_name as boolean)
+              setIsEbook(result.ebook as boolean)
 
-            // if product image length true then modify the data
-            if (!!result?.product_image) {
-              const mapImage = (result?.product_image as productImageTypes[])?.map(item => ({
-                name: item.original_name,
-                fileId: item.fileId,
-                url: item.url,
-                thumbUrl: item.thumbnailUrl,
-              }))
-              setFileList(mapImage)
+              // if product image length true then modify the data
+              if (!!result?.product_image) {
+                const mapImage = (result?.product_image as productImageTypes[])?.map(item => ({
+                  name: item.original_name,
+                  fileId: item.fileId,
+                  url: item.url,
+                  thumbUrl: item.thumbnailUrl,
+                }))
+                setFileList(mapImage)
+              }
+
+              form.setFieldsValue({
+                ...result,
+                corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
+              })
+
+              // console.log(result)
             }
-
-            form.setFieldsValue({
-              ...result,
-              corp_name: action === DUPLICATE_VAR ? `${result.corp_name}-${randomString}` : result.corp_name,
-            })
-
-            // console.log(result)
+          } else {
+            ToastMessage('error', '', res.data.message)
           }
-          setLoading(false)
         })
       }
     } catch (err) {
       ToastMessage('error', '', (err as Error).message)
     } finally {
-      setLoading(true)
+      setLoading(false)
     }
   }, [modalState, action, form, objId])
 
@@ -163,7 +167,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
           htmlType="submit"
           type="primary"
           // disabled={btnLoading || loading}
-          // loading={btnLoading}
+          loading={btnLoading}
           onClick={() => form.submit()}
         >
           Save
@@ -173,7 +177,7 @@ const CreateCorp = ({ modalState, setModalState, action, objId }: propTypes): JS
         </Button>,
       ]}
     >
-      {!loading ? (
+      {loading ? (
         <>
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />

@@ -33,6 +33,7 @@ interface formValueTypes {
 interface responseType {
   result: Record<string, unknown>
   message: string
+  success: boolean
 }
 interface corpListType {
   value: string
@@ -67,21 +68,25 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
     try {
       if (objId && modalState) {
         Axios.get(`${API_BASE_URL}/api/invoice-srv/edit-invoice/${objId}`).then(res => {
-          const { result } = res.data as responseType
-          if (action === DUPLICATE_VAR || action === EDIT_VAR) {
-            form.setFieldsValue({
-              ...result,
-              order_date: result.order_date ? dayjs(result.order_date as string, dateFormat) : '',
-              order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
-            })
+          const { result, success } = res.data as responseType
+
+          if (success) {
+            if (action === DUPLICATE_VAR || action === EDIT_VAR) {
+              form.setFieldsValue({
+                ...result,
+                order_date: result.order_date ? dayjs(result.order_date as string, dateFormat) : '',
+                order_name: action === DUPLICATE_VAR ? `${result.order_name}-${randomString}` : result.order_name,
+              })
+            }
+          } else {
+            ToastMessage('error', '', res.data.message)
           }
-          setLoading(false)
         })
       }
     } catch (err) {
       ToastMessage('error', '', (err as Error).message)
     } finally {
-      setLoading(true)
+      setLoading(false)
     }
   }, [modalState, action, form, objId])
 
@@ -132,7 +137,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
           htmlType="submit"
           type="primary"
           // disabled={btnLoading || loading}
-          // loading={btnLoading}
+          loading={btnLoading}
           onClick={() => form.submit()}
         >
           Save
@@ -142,7 +147,7 @@ const CreateInvoice = ({ modalState, setModalState, action, objId }: propTypes):
         </Button>,
       ]}
     >
-      {!loading ? (
+      {loading ? (
         <>
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
           <TableContentLoaderWithProps rowCounts={1} columnWidth={[50, 50]} rowHeight={140} />
